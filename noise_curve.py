@@ -1,25 +1,29 @@
-from gwosc.datasets import event_gps
-from gwpy.timeseries import TimeSeries
+#from __future__ import division, print_function
+from matplotlib.pyplot import *
+import requests
+rcParams["font.family"] = "Times New Roman"
 
 
-gps = event_gps('GW170817')
+# download L1 strain data from O2 off LIGO DCC
+url = 'https://dcc.ligo.org/public/0156/G1801952/001/2017-08-06_DCH_C02_L1_O2_Sensitivity_strain_asd.txt'
+r = requests.get(url, allow_redirects=True)
+open('l1o2strain.txt', 'wb').write(r.content)
 
+# read the resulting .txt file
+f = open('l1o2strain.txt','r')
+ldata = f.read()
+f.close()
 
-# fetch data and compute ASDs for each involved detector around GW170817's merger
-ldata = TimeSeries.fetch_open_data('L1', int(gps)-512, int(gps)+512)
-lasd=ldata.asd(fftlength=4, method='median')
-
-hdata = TimeSeries.fetch_open_data('H1', int(gps)-512, int(gps)+512)
-hasd=hdata.asd(fftlength=4, method='median')
-
-vdata = TimeSeries.fetch_open_data('V1', int(gps)-512, int(gps)+512)
-vasd=vdata.asd(fftlength=4, method='median')
-
-
-# plot ASD's on a single set of axes
-plot = lasd.plot()
-ax = plot.gca()
-ax.set_xlim(10, 1400)
-ax.set_ylim(5e-24, 1e-20)
-plot.show(warn=False)
+# plot the data
+fig = figure(figsize=(6, 6))
+plot(*ldata, color='b')
+xlim(20, 1400)
+ylim(5e-24, 1e-20)
+xlabel('frequency (Hz)')
+ylabel(r'noise strain [$Hz^{-1/2}$]')
+xscale('log')
+yscale('log')
+rc('xtick', labelsize=12)
+rc('ytick', labelsize=12)
+rc('axes', labelsize=14)
 

@@ -28,7 +28,7 @@ times = np.linspace(start_time, end_time, 10001)
 # The sub-function waveforms.approximant.Approximant generates an Approximant object.
 # You can input whatever waveform approximant that is acceptable by PyCBC in the argument
 # name. Note that I have made a small change to the waveform.approximant.py script. 
-approx = gwmemory.waveforms.approximant.Approximant(q=q, name="IMRPhenomD", spin_1=S1, spin_2=S2, total_mass=M, distance=700, times=times)
+approx = gwmemory.waveforms.approximant.Approximant(q=q, name="IMRPhenomD", spin_1=S1, spin_2=S2, total_mass=M, distance=d, times=times)
 
 
 # GW waveform only definition
@@ -48,7 +48,7 @@ memory, times = approx.time_domain_memory(inc=inc, phase=pol)
 fig = figure(figsize=(12, 6))
 plot(times, memory['plus']*(10**22), color='r')
 axhline(0, linestyle=':', color='k')
-xlim(-0.5, 0.05)
+xlim(-0.5, 0.02)
 xlabel('Time (s)')
 ylabel(r'$h_\plus$ $[10^{-22}]$')
 rc('xtick', labelsize=12)
@@ -66,7 +66,7 @@ close()
 fig = figure(figsize=(12, 6))
 plot(times, oscillatory['plus']*(10.0**22.0), color='r')
 axhline(0, linestyle=':', color='k')
-xlim(-0.5, 0.05)
+xlim(-0.5, 0.02)
 xlabel('Time (s)')
 ylabel(r'$h_\plus$ $[10^{-22}]$')
 rc('xtick', labelsize=12)

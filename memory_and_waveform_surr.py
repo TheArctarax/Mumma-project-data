@@ -4,11 +4,11 @@ from matplotlib.pyplot import *
 import numpy as np
 np.seterr(divide='ignore', invalid='ignore')
 
-q = 2.
-S1 = [0., 0.5, 0.2]
-S2 = [0., 0., 0.5]
+q = 1.
+S1 = [0., 0., 0.]
+S2 = [0., 0., 0.]
 
-times = np.linspace(-0.51, 0.06, 10001)
+times = np.linspace(-0.08, 0.02, 10001)
 surr = gwmemory.waveforms.surrogate.Surrogate(q=q, spin_1=S1, spin_2=S2, total_mass=60, distance=400, times=times)
 
 inc = np.pi / 2

@@ -1,10 +1,12 @@
 # Here I am importing pandas, an often-used data handling python
-# package. 
-from matplotlib.pyplot import *
+# package.
+import matplotlib
+matplotlib.use('Agg') 
+import matplotlib.pyplot as plt
 import requests
-import pandas
+import pandas as pd
 import wget
-rcParams["font.family"] = "Times New Roman"
+#rcParams["font.family"] = "Times New Roman"
 
 
 # download L1 strain data from O2 off LIGO DCC
@@ -22,15 +24,15 @@ df = pd.read_csv('L1_O2_Sensitivity_strain_asd.txt', sep=" ", header=None, names
 #f.close()
 
 # plot the data
-fig = figure(figsize=(6, 6))
-plot(df['frequency'], df['asd'], color='b')
-xlim(20, 1400)
-ylim(5e-24, 1e-20)
-xlabel('frequency (Hz)')
-ylabel(r'noise strain [$Hz^{-1/2}$]')
-xscale('log')
-yscale('log')
-rc('xtick', labelsize=12)
-rc('ytick', labelsize=12)
-rc('axes', labelsize=14)
-
+#fig = figure(figsize=(6, 6))
+plt.plot(df['frequency'], df['asd'], color='b')
+plt.xlim(20, 1400)
+plt.ylim(5e-24, 1e-20)
+plt.xlabel('frequency (Hz)')
+plt.ylabel(r'noise strain [$Hz^{-1/2}$]')
+plt.xscale('log')
+plt.yscale('log')
+#plt.rc('xtick', labelsize=12)
+#plt.rc('ytick', labelsize=12)
+#plt.rc('axes', labelsize=14)
+plt.savefig("noise_curve.pdf")

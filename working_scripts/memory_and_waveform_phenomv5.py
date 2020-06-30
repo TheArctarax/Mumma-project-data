@@ -12,32 +12,39 @@ S1 = [0., 0., 0.]
 S2 = [0., 0., 0.]
 inc = np.pi / 2
 pol = 0
-apx = 'IMRPhenomD'
 d=600
-delta_t=1./4096
-f0=15
-m1=30
-m2=30
-
-
-# GW memory-less definition
-hp, hc = get_td_waveform(approximant=apx, mass1=m1, mass2=m2, spin1x=S1[0], spin2x=S2[0], spin1y=S1[1],
-                         spin2y=S2[1], spin1z=S1[2], spin2z=S2[2], inclination=inc, coa_phase=pol, distance=d,
-                         delta_t=delta_t, f_lower=f0)
+M=60
+q=1
 
 
 # Sample space definition for the memory's t-axis. Purposely set to begin, end, and have the same number of points as the
 # original waveform so that superposition of the timeseries is possible.
-start_time=hp.sample_times[0]
-end_time=hp.sample_times[-1]
-times = np.linspace(start_time, end_time, len(hp.sample_times))
+start_time=-0.51
+end_time=0.02
+times = np.linspace(start_time, end_time, 10001)
 
+
+# GW waveform with memory definition
+# The sub-function waveforms.approximant.Approximant generates an Approximant object.
+# You can input whatever waveform approximant that is acceptable by PyCBC in the argument
+# name. Note that I have made a small change to the waveform.approximant.py script. 
+approx = gwmemory.waveforms.approximant.Approximant(q=q, name="IMRPhenomD", spin_1=S1, spin_2=S2, total_mass=M, distance=700, times=times)
+
+
+# GW waveform only definition
+# A surrogate object has the following attributes: time_domain_memory (a 
+# pycbc.timeseries object that has both the ['plus'] and ['cross'] sub-arrays), 
+# and time_domain_memory which also has ['plus'] and ['cross']). Calling
+# these attributes returns both the pycbc timesseries and the sampling time
+# arrays (which you store it as times here).
+oscillatory, times = approx.time_domain_oscillatory(inc=inc, phase=pol)
 
 # GW memory definition
-memory, times = gwmemory.time_domain_memory(model=apx, q=m2/m1, total_mass=(m1+m2), distance=d, inc=inc, phase=pol, times=times)
-
+memory, times = approx.time_domain_memory(inc=inc, phase=pol)
 
 # Plot of GW memory
+# By using the above attributes, you can easily plot out the memory,
+# original waveform and waveform + memory. 
 fig = figure(figsize=(12, 6))
 plot(times, memory['plus']*(10**22), color='r')
 axhline(0, linestyle=':', color='k')
@@ -57,7 +64,7 @@ close()
 
 # Plot of memory-less waveform
 fig = figure(figsize=(12, 6))
-plot(hp.sample_times, hp*(10**22), color='r')
+plot(times, oscillatory['plus']*(10.0**22.0), color='r')
 axhline(0, linestyle=':', color='k')
 xlim(-0.5, 0.05)
 xlabel('Time (s)')
@@ -77,8 +84,8 @@ close()
 fig = figure(figsize=(12, 6))
 
 fig.add_subplot(2, 1, 2)
-plot(hp.sample_times, (hp[:] + memory['plus'][:])*(10**22), color='r', label=r'Waveform $\plus$ Memory')
-plot(hp.sample_times, hp*(10**22), linestyle='--' , color='tab:purple', label='Original Waveform')
+plot(times, (oscillatory['plus']+memory['plus'])*(10.0**22.0), color='r', label=r'Waveform $\plus$ Memory')
+plot(times, oscillatory['plus']*(10.0**22.0), linestyle='--' , color='tab:purple', label='Original Waveform')
 axhline(0, linestyle=':', color='k')
 xlim(-0.04, 0.015)
 xlabel('Time (s)')
@@ -90,10 +97,10 @@ rc('axes', labelsize=14)
 
 
 fig.add_subplot(2, 1, 1)
-plot(hp.sample_times, (hp[:] + memory['plus'][:])*(10**22), color='r', label=r'Waveform $\plus$ Memory')
-plot(times, memory['plus']*(10**22), linestyle='--', color='b', label='Memory')
+plot(times, (oscillatory['plus'][:] + memory['plus'][:])*(10.0**22.0), color='r', label=r'Waveform $\plus$ Memory')
+plot(times, memory['plus']*(10.0**22.0), linestyle='dotted', color='b', label='Memory')
 axhline(0, linestyle=':', color='k')
-xlim(-0.3, 0.02)
+xlim(-0.5, times[-1])
 ylabel(r'$h_\plus$ $[10^{-22}]$')
 legend(loc='upper left')
 rc('xtick', labelsize=12)

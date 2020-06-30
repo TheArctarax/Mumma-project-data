@@ -19,7 +19,7 @@ q=1
 
 # Sample space definition for the memory's t-axis. Purposely set to begin, end, and have the same number of points as the
 # original waveform so that superposition of the timeseries is possible.
-start_time=-0.08
+start_time=-0.51
 end_time=0.02
 times = np.linspace(start_time, end_time, 10001)
 
@@ -28,7 +28,7 @@ times = np.linspace(start_time, end_time, 10001)
 # The sub-function waveforms.approximant.Approximant generates an Approximant object.
 # You can input whatever waveform approximant that is acceptable by PyCBC in the argument
 # name. Note that I have made a small change to the waveform.approximant.py script. 
-approx = gwmemory.waveforms.approximant.Approximant(q=q, name="IMRPhenomD", spin_1=S1, spin_2=S2, total_mass=M, distance=400, times=times)
+approx = gwmemory.waveforms.approximant.Approximant(q=q, name="IMRPhenomD", spin_1=S1, spin_2=S2, total_mass=M, distance=700, times=times)
 
 
 # GW waveform only definition
@@ -86,7 +86,6 @@ fig = figure(figsize=(12, 6))
 fig.add_subplot(2, 1, 2)
 plot(times, (oscillatory['plus']+memory['plus'])*(10.0**22.0), color='r', label=r'Waveform $\plus$ Memory')
 plot(times, oscillatory['plus']*(10.0**22.0), linestyle='--' , color='tab:purple', label='Original Waveform')
-plot(times, memory['plus']*(10.0**22.0), linestyle='dotted', color='b', label='Memory')
 axhline(0, linestyle=':', color='k')
 xlim(-0.04, 0.015)
 xlabel('Time (s)')
@@ -95,16 +94,13 @@ legend(loc='upper left')
 rc('xtick', labelsize=12)
 rc('ytick', labelsize=12)
 rc('axes', labelsize=14)
-#tight_layout()
-#show()
-#close()
 
 
 fig.add_subplot(2, 1, 1)
 plot(times, (oscillatory['plus'][:] + memory['plus'][:])*(10.0**22.0), color='r', label=r'Waveform $\plus$ Memory')
 plot(times, memory['plus']*(10.0**22.0), linestyle='dotted', color='b', label='Memory')
 axhline(0, linestyle=':', color='k')
-xlim(right=times[-1])
+xlim(-0.5, times[-1])
 ylabel(r'$h_\plus$ $[10^{-22}]$')
 legend(loc='upper left')
 rc('xtick', labelsize=12)

@@ -14,7 +14,7 @@ inc = np.pi / 2
 pol = 0
 d=600
 M=60
-q=1
+q=4
 
 
 # Sample space definition for the memory's t-axis. Purposely set to begin, end, and have the same number of points as the
@@ -26,7 +26,7 @@ times = np.linspace(start_time, end_time, 10001)
 
 # GW waveform with memory definition
 # The sub-function waveforms.surrogate.Surrogate generates a surrogate object.
-surr = gwmemory.waveforms.surrogate.Surrogate(q=q, spin_1=S1, spin_2=S2, total_mass=M, distance=400, times=times)
+surr = gwmemory.waveforms.surrogate.Surrogate(q=q, name='nrsur7dq4', spin_1=S1, spin_2=S2, total_mass=M, distance=400, times=times)
 
 
 # GW waveform only definition
@@ -46,7 +46,7 @@ memory, times = surr.time_domain_memory(inc=inc, phase=pol)
 fig = figure(figsize=(12, 6))
 plot(times, memory['plus']*(10**22), color='r')
 axhline(0, linestyle=':', color='k')
-xlim(-0.5, 0.05)
+xlim(-0.5, 0.02)
 xlabel('Time (s)')
 ylabel(r'$h_\plus$ $[10^{-22}]$')
 rc('xtick', labelsize=12)
@@ -64,7 +64,7 @@ close()
 fig = figure(figsize=(12, 6))
 plot(times, oscillatory['plus']*(10.0**22.0), color='r')
 axhline(0, linestyle=':', color='k')
-xlim(-0.5, 0.05)
+xlim(-0.5, 0.02)
 xlabel('Time (s)')
 ylabel(r'$h_\plus$ $[10^{-22}]$')
 rc('xtick', labelsize=12)
@@ -84,7 +84,7 @@ fig = figure(figsize=(12, 6))
 fig.add_subplot(2, 1, 2)
 plot(times, (oscillatory['plus']+memory['plus'])*(10.0**22.0), color='r', label=r'Waveform $\plus$ Memory')
 plot(times, oscillatory['plus']*(10.0**22.0), linestyle='--' , color='tab:purple', label='Original Waveform')
-plot(times, memory['plus']*(10.0**22.0), linestyle='dotted', color='b', label='Memory')
+#plot(times, memory['plus']*(10.0**22.0), linestyle='dotted', color='b', label='Memory')
 axhline(0, linestyle=':', color='k')
 xlim(-0.04, 0.015)
 xlabel('Time (s)')
@@ -102,7 +102,7 @@ fig.add_subplot(2, 1, 1)
 plot(times, (oscillatory['plus'][:] + memory['plus'][:])*(10.0**22.0), color='r', label=r'Waveform $\plus$ Memory')
 plot(times, memory['plus']*(10.0**22.0), linestyle='dotted', color='b', label='Memory')
 axhline(0, linestyle=':', color='k')
-xlim(right=times[-1])
+xlim(-0.05, times[-1])
 ylabel(r'$h_\plus$ $[10^{-22}]$')
 legend(loc='upper left')
 rc('xtick', labelsize=12)

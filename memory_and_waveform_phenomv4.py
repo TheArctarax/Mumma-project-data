@@ -13,13 +13,11 @@ S2 = [0., 0., 0.]
 inc = np.pi / 2
 pol = 0
 apx = 'IMRPhenomD'
-d=800
+d=600
 delta_t=1./4096
 f0=15
-m1=50
-m2=50
-plot_begin=-0.5
-plot_end=0.05
+m1=30
+m2=30
 
 
 # GW memory-less definition
@@ -27,11 +25,11 @@ hp, hc = get_td_waveform(approximant=apx, mass1=m1, mass2=m2, spin1x=S1[0], spin
                          spin2y=S2[1], spin1z=S1[2], spin2z=S2[2], inclination=inc, coa_phase=pol, distance=d,
                          delta_t=delta_t, f_lower=f0)
 
+
+# Sample space definition for the memory's t-axis. Purposely set to begin, end, and have the same number of points as the
+# original waveform so that superposition of the timeseries is possible.
 start_time=hp.sample_times[0]
 end_time=hp.sample_times[-1]
-
-
-# Sample space definition
 times = np.linspace(start_time, end_time, len(hp.sample_times))
 
 
@@ -43,12 +41,12 @@ memory, times = gwmemory.time_domain_memory(model=apx, q=m2/m1, total_mass=(m1+m
 fig = figure(figsize=(12, 6))
 plot(times, memory['plus']*(10**22), color='r')
 axhline(0, linestyle=':', color='k')
-xlim(plot_begin, plot_end)
+xlim(-0.5, 0.05)
 xlabel('Time (s)')
 ylabel(r'$h_\plus$ $[10^{-22}]$')
-rc('xtick', labelsize=8)
-rc('ytick', labelsize=8)
-rc('axes', labelsize=10)
+rc('xtick', labelsize=12)
+rc('ytick', labelsize=12)
+rc('axes', labelsize=14)
 
 savefig('memory.pdf')
 
@@ -61,12 +59,12 @@ close()
 fig = figure(figsize=(12, 6))
 plot(hp.sample_times, hp*(10**22), color='r')
 axhline(0, linestyle=':', color='k')
-xlim(plot_begin, plot_end)
+xlim(-0.5, 0.05)
 xlabel('Time (s)')
 ylabel(r'$h_\plus$ $[10^{-22}]$')
-rc('xtick', labelsize=8)
-rc('ytick', labelsize=8)
-rc('axes', labelsize=10)
+rc('xtick', labelsize=12)
+rc('ytick', labelsize=12)
+rc('axes', labelsize=14)
 
 savefig('original_waveform.pdf')
 
@@ -79,26 +77,28 @@ close()
 fig = figure(figsize=(12, 6))
 
 fig.add_subplot(2, 1, 2)
-plot(hp.sample_times, (hp[:] + memory['plus'][:])*(10**22), color='r')
-plot(hp.sample_times, hp*(10**22), linestyle='--' , color='b')
+plot(hp.sample_times, (hp[:] + memory['plus'][:])*(10**22), color='r', label=r'Waveform $\plus$ Memory')
+plot(hp.sample_times, hp*(10**22), linestyle='--' , color='tab:purple', label='Original Waveform')
 axhline(0, linestyle=':', color='k')
-xlim(-0.04, 0.02)
+xlim(-0.04, 0.015)
 xlabel('Time (s)')
 ylabel(r'$h_\plus$ $[10^{-22}]$')
-rc('xtick', labelsize=8)
-rc('ytick', labelsize=8)
-rc('axes', labelsize=10)
+legend(loc='upper left')
+rc('xtick', labelsize=12)
+rc('ytick', labelsize=12)
+rc('axes', labelsize=14)
 
 
 fig.add_subplot(2, 1, 1)
-plot(hp.sample_times, (hp[:] + memory['plus'][:])*(10**22), color='r')
-plot(times, memory['plus']*(10**22), linestyle='--', color='b')
+plot(hp.sample_times, (hp[:] + memory['plus'][:])*(10**22), color='r', label=r'Waveform $\plus$ Memory')
+plot(times, memory['plus']*(10**22), linestyle='--', color='b', label='Memory')
 axhline(0, linestyle=':', color='k')
-xlim(-0.04, 0.02)
+xlim(-0.3, 0.02)
 ylabel(r'$h_\plus$ $[10^{-22}]$')
-rc('xtick', labelsize=8)
-rc('ytick', labelsize=8)
-rc('axes', labelsize=10)
+legend(loc='upper left')
+rc('xtick', labelsize=12)
+rc('ytick', labelsize=12)
+rc('axes', labelsize=14)
 
 savefig('combined.pdf')
 

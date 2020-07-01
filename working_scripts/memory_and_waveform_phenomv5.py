@@ -4,6 +4,7 @@ from matplotlib.pyplot import *
 from pycbc.waveform import get_td_waveform
 import numpy as np
 rcParams["font.family"] = "Times New Roman"
+rcParams['axes.unicode_minus'] = False
 np.seterr(divide='ignore', invalid='ignore')
 
 

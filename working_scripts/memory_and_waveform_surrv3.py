@@ -17,7 +17,7 @@ inc = np.pi / 2
 pol = 0
 d=600
 M=60
-q=1
+q=1.99
 
 
 # Sample space definition for the memory's t-axis. Purposely set to begin, end, and have the same number of points as the
@@ -29,7 +29,7 @@ times = np.linspace(start_time, end_time, 10001)
 
 # GW waveform with memory definition
 # The sub-function waveforms.surrogate.Surrogate generates a surrogate object.
-surr = gwmemory.waveforms.surrogate.Surrogate(q=q, name='nrsur7dq2', spin_1=S1, spin_2=S2, total_mass=M, distance=400, times=times)
+surr = gwmemory.waveforms.surrogate.Surrogate(q=q, name='nrsur7dq2', spin_1=S1, spin_2=S2, total_mass=M, distance=d, times=times)
 
 
 # GW waveform only definition

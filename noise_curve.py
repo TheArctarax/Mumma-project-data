@@ -2,7 +2,8 @@
 #package.
 #importssl
 #context=ssl.SSLContext(ssl.PROTOCOL_TLSv1_2)
-#matplotlib.use('Agg')
+import matplotlib
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import pandas as pd
 import wget
@@ -20,13 +21,14 @@ rcParams['axes.unicode_minus'] = False
 #names=('./L1_O2_Sensitivity_strain_asd.txt', './H1_O2_Sensitivity_strain_asd.txt', './V1_O2_Sensitivity_strain_asd.txt')
 #
 #for files, fnames in itertools.izip(urls, names):
-#    wget.download(files, fnames)
+#   wget.download(files, fnames)
 
 
 # read the resulting .txt file using pandas. I renamed the columns as frequencies and asd.
 dfl=pd.read_csv('L1_O2_Sensitivity_strain_asd.txt',sep="\t",index_col=False,header=None,names=["frequency","asd"])
 dfh=pd.read_csv('H1_O2_Sensitivity_strain_asd.txt',sep="\t",index_col=False,header=None,names=["frequency","asd"])
-dfv=pd.read_csv('V1_O2_Sensitivity_strain_asd.txt',sep="\t",index_col=False,header=None,names=["frequency","asd"])
+dfv=pd.read_csv('V1_O2_Sensitivity_strain_asd.txt',sep=" ",index_col=False,header=None, names=["frequency","asd"])
+print(dfv)
 
 
 # plot the data

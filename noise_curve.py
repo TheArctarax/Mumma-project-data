@@ -1,5 +1,7 @@
 # Here I am importing pandas, an often-used data handling python
 # package.
+#import ssl
+#context = ssl.SSLContext(ssl.PROTOCOL_TLSv1_2)
 import matplotlib
 matplotlib.use('Agg') 
 import matplotlib.pyplot as plt
@@ -9,15 +11,18 @@ import wget
 #rcParams["font.family"] = "Times New Roman"
 
 
-# download L1 strain data from O2 off LIGO DCC
-url = 'https://dcc.ligo.org/public/0156/G1801952/001/2017-08-06_DCH_C02_L1_O2_Sensitivity_strain_asd.txt'
-wget.download(url, './L1_O2_Sensitivity_strain_asd.txt')
+# download L1 strain data from O2 off LIGO DCC. This is only required to be run once. Otherwise, duplicate files will be downloaded.
+
+#url = 'https://dcc.ligo.org/public/0156/G1801952/001/2017-08-06_DCH_C02_L1_O2_Sensitivity_strain_asd.txt'
+#wget.download(url, './L1_O2_Sensitivity_strain_asd.txt')
 
 #r = requests.get(url, allow_redirects=True)
 #open('l1o2strain.txt', 'wb').write(r.content)
 
-# read the resulting .txt file
-df = pd.read_csv('L1_O2_Sensitivity_strain_asd.txt', sep=" ", header=None, names=["frequency", "asd"])
+# read the resulting .txt file using pandas. I here named the columns as frequencies and asd.
+df = pd.read_csv('L1_O2_Sensitivity_strain_asd.txt', sep="\t", index_col=False, header=None, names=["frequency", "asd"])
+print(df)
+
 
 #f = open('l1o2strain.txt','r')
 #ldata = f.read()

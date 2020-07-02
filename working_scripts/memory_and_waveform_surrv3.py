@@ -1,7 +1,5 @@
 from __future__ import division, print_function
 import gwmemory
-import matplotlib
-matplotlib.use("Agg")
 from matplotlib.pyplot import *
 from pycbc.waveform import get_td_waveform
 import numpy as np

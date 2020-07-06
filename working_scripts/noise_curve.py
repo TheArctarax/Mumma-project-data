@@ -2,6 +2,7 @@
 #package.
 #importssl
 #context=ssl.SSLContext(ssl.PROTOCOL_TLSv1_2)
+import gwpy
 import matplotlib.pyplot as plt
 import pandas as pd
 import wget
@@ -29,20 +30,19 @@ dfv=pd.read_csv('V1_O2_Sensitivity_strain_asd.txt',sep="\s+",index_col=False,hea
 
 
 # plot the data
-fig = plt.figure(figsize=(6, 6))
-plt.plot(dfl['frequency'], dfl['asd'], color='tab:blue', label='L1')
-plt.plot(dfh['frequency'], dfh['asd'], color='tab:red', label='H1')
-plt.plot(dfv['frequency'], dfv['asd'], color='tab:purple', label='V1')
+fig = plt.figure(figsize=(4.5, 4.5))
+plt.loglog(dfl['frequency'], dfl['asd'], color='gwpy:ligo-livingston', label='Livingston')
+plt.loglog(dfh['frequency'], dfh['asd'], color='gwpy:ligo-hanford', label='Hanford')
+plt.loglog(dfv['frequency'], dfv['asd'], color='gwpy:virgo', label='Virgo')
 plt.xlim(20, 5000)
 #plt.ylim(5e-24,1e-20)
-plt.xlabel('Frequency [$Hz$]')
-plt.ylabel(r'Noise Strain [$Hz^{-1/2}$]')
-plt.xscale('log')
-plt.yscale('log')
-plt.legend()
-plt.rc('xtick',labelsize=12)
-plt.rc('ytick',labelsize=12)
-plt.rc('axes',labelsize=14)
+plt.xlabel('Frequency [Hz]')
+plt.ylabel(r'Noise Strain [Hz$^{-1/2}$]')
+plt.grid(False)
+plt.legend(loc='upper right', prop={'size':12})
+plt.rc('xtick',labelsize=10)
+plt.rc('ytick',labelsize=10)
+plt.rc('axes',labelsize=12)
 
 plt.savefig("noise_curve.pdf")
 

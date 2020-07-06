@@ -33,16 +33,27 @@ def frequency_domain_transform(time_domain_strain, times):
   return frequency_domain_strain, frequencies
 
 
-# Variable assignments
-f_lower=15
-f_upper=312
+# Variable assignments for first plot
+f_lower=18.
+f_upper=313.
 S1 = [0., 0., 0.]
 S2 = [0., 0., 0.]
 inc = np.pi / 2
-pol = 0
-d=420
+pol = 0.
+d=420.
 M=66.2
 q=1.16
+
+# Variable assignments for second plot
+f_lower_2=15.
+f_upper_2=265.
+S1_2 = [0., 0., 0.]
+S2_2 = [0., 0., 0.]
+inc_2 = np.pi / 2
+pol_2 = 0.
+d_2 = 20.
+M_2 = 80.
+q_2 = 1.
 
 
 # Sample space definition for the memory's t-axis.
@@ -54,6 +65,7 @@ times = np.linspace(start_time, end_time, 10001)
 # GW waveform with memory definition
 # The sub-function waveforms.surrogate.Surrogate generates a surrogate object.
 surr = gwmemory.waveforms.surrogate.Surrogate(q=q, name='nrsur7dq2', spin_1=S1, spin_2=S2, total_mass=M, distance=d, times=times)
+surr_2 = gwmemory.waveforms.surrogate.Surrogate(q=q_2, name='nrsur7dq2', spin_1=S1_2, spin_2=S2_2, total_mass=M_2, distance=d_2, times=times)
 
 
 # GW waveform-only definition
@@ -65,22 +77,22 @@ surr = gwmemory.waveforms.surrogate.Surrogate(q=q, name='nrsur7dq2', spin_1=S1, 
 
 # Now, basically you can still do the same (using time_domain_oscillatory) here. 
 oscillatory, times = surr.time_domain_oscillatory(inc=inc, phase=pol)
-
+oscillatory_2, times_2 = surr_2.time_domain_oscillatory(inc=inc_2, phase=pol_2)
 
 # Now it's time to apply our newly defined function `frequency_domain_transform`. Use
 # this to transform the osciallory time domain waveform to the frequency domain. We
 # use oscillatory_tilde, frequencies to store the products.
 oscillatory_tilde, frequencies = frequency_domain_transform(oscillatory, times)
-
+oscillatory_tilde_2, frequencies_2 = frequency_domain_transform(oscillatory_2, times_2)
 
 # GW memory definition
 # Same thing happens for the memory
 memory, times = surr.time_domain_memory(inc=inc, phase=pol)
-
+memory_2, times_2 = surr_2.time_domain_memory(inc=inc_2, phase=pol_2)
 
 # Again, apply our new function to transform the memory into the frequency domain.
 memory_tilde, frequencies = frequency_domain_transform(memory, times)
-
+memory_tilde_2, frequencies_2 = frequency_domain_transform(memory_2, times_2)
 
 # Plot of the frequency domain waveform.
 
@@ -161,31 +173,70 @@ for i in range(len(frequencies)):
   else:
     f_new[i]=frequencies[i]
 
+f_new_2 = np.zeros(len(frequencies_2))
+
+for i in range(len(frequencies_2)):
+  if frequencies_2[i] > f_upper_2:
+    f_new_2[i]=f_upper_2
+  elif frequencies_2[i] < f_lower_2:
+    f_new_2[i]=f_lower_2
+  else:
+    f_new_2[i]=frequencies_2[i]
+
 # Finally, do the same for the full plot.
-fig = figure(figsize=(6, 6))
-loglog(f_new, abs((oscillatory_tilde['plus'][:] + memory_tilde['plus'][:])*np.sqrt(frequencies)), color='tab:orange', linewidth=10, zorder=1, label='Waveform + Memory')
-loglog(f_new, abs(oscillatory_tilde['plus']*np.sqrt(frequencies)), color='g', linewidth=12, zorder=1, label='Waveform')
-loglog(frequencies, abs(memory_tilde['plus']*np.sqrt(frequencies)), color='b', linewidth=12, zorder=1, label='Memory')
+rc('xtick', labelsize=12)
+rc('ytick', labelsize=12)
+rc('axes', labelsize=14)
+fig = figure(figsize=(9, 4))
+
+fig.add_subplot(1, 2, 1)
+loglog(f_new, abs((oscillatory_tilde['plus'][:] + memory_tilde['plus'][:])*np.sqrt(frequencies)), color='tab:orange', linewidth=8, zorder=1)
+#loglog(f_new, abs(oscillatory_tilde['plus']*np.sqrt(frequencies)), color='g', linewidth=12, zorder=1, label='Waveform')
+loglog(frequencies, abs(memory_tilde['plus']*np.sqrt(frequencies)), color='b', linewidth=8, zorder=1)
 
 # Finally, to plot the noise curve, simply load the txt files and plot them again here.
 dfl=pd.read_csv('L1_O2_Sensitivity_strain_asd.txt',sep="\t",index_col=False,header=None,names=["frequency","asd"])
 dfh=pd.read_csv('H1_O2_Sensitivity_strain_asd.txt',sep="\t",index_col=False,header=None,names=["frequency","asd"])
 dfv=pd.read_csv('V1_O2_Sensitivity_strain_asd.txt',sep="\s+",index_col=False,header=None, names=["frequency","asd"])
 
-loglog(dfl['frequency'], dfl['asd'], color='gwpy:ligo-livingston', zorder=0 , label='L1 noise')
-loglog(dfh['frequency'], dfh['asd'], color='gwpy:ligo-hanford', zorder=0 , label='H1 noise')
-loglog(dfv['frequency'], dfv['asd'], color='gwpy:virgo', zorder=0, label='V1 noise')
+loglog(dfl['frequency'], dfl['asd'], color='gwpy:ligo-livingston', zorder=0)
+loglog(dfh['frequency'], dfh['asd'], color='gwpy:ligo-hanford', zorder=0)
+loglog(dfv['frequency'], dfv['asd'], color='gwpy:virgo', zorder=0)
 
-xlim(10, 1000)
-ylim(5*(10**(-24)), 10**(-21))
+xlim(20, 1000)
+ylim(5.5*(10**(-24)), 10**(-19))
 xlabel('Frequency [Hz]')
 ylabel(r'ASD [Hz$^{-1/2}$]')
 xscale('log')
 yscale('log')
-legend(loc='upper right', prop={'size':18})
+#legend(loc='upper right', prop={'size':11})
+grid(False)
+
+
+# First plot was just GW150814. This plot ensures memory is detectable.
 rc('xtick', labelsize=12)
 rc('ytick', labelsize=12)
 rc('axes', labelsize=14)
+fig.add_subplot(1, 2, 2)
+loglog(f_new_2, abs((oscillatory_tilde_2['plus'][:] + memory_tilde_2['plus'][:])*np.sqrt(frequencies_2)), color='tab:orange', linewidth=8, zorder=1, label='Waveform + Memory')
+#loglog(f_new, abs(oscillatory_tilde['plus']*np.sqrt(frequencies)), color='g', linewidth=12, zorder=1, label='Waveform')
+loglog(frequencies_2, abs(memory_tilde_2['plus']*np.sqrt(frequencies_2)), color='b', linewidth=8, zorder=1, label='Memory')
+
+dfl=pd.read_csv('L1_O2_Sensitivity_strain_asd.txt',sep="\t",index_col=False,header=None,names=["frequency","asd"])
+dfh=pd.read_csv('H1_O2_Sensitivity_strain_asd.txt',sep="\t",index_col=False,header=None,names=["frequency","asd"])
+dfv=pd.read_csv('V1_O2_Sensitivity_strain_asd.txt',sep="\s+",index_col=False,header=None, names=["frequency","asd"])
+
+loglog(dfl['frequency'], dfl['asd'], color='gwpy:ligo-livingston', zorder=0 , label='Livingston')
+loglog(dfh['frequency'], dfh['asd'], color='gwpy:ligo-hanford', zorder=0 , label='Hanford')
+loglog(dfv['frequency'], dfv['asd'], color='gwpy:virgo', zorder=0, label='Virgo')
+
+xlim(20, 1000)
+ylim(5.5*(10**(-24)), 10**(-19))
+xlabel('Frequency [Hz]')
+#ylabel(r'ASD [Hz$^{-1/2}$]')
+xscale('log')
+yscale('log')
+legend(loc='upper right', prop={'size':11})
 grid(False)
 
 savefig('waveform_asd_wave_and_mem_and_noise.pdf')

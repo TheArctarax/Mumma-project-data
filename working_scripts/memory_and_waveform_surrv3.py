@@ -44,7 +44,7 @@ memory, times = surr.time_domain_memory(inc=inc, phase=pol)
 # Plot of GW memory
 # By using the above attributes, you can easily plot out the memory,
 # original waveform and waveform + memory. 
-fig = figure(figsize=(12, 6))
+fig = figure(figsize=(6, 6))
 plot(times, memory['plus']*(10**22), color='r')
 axhline(0, linestyle=':', color='k')
 xlim(-0.5, 0.02)
@@ -68,9 +68,9 @@ axhline(0, linestyle=':', color='k')
 xlim(-0.5, 0.02)
 xlabel('Time (s)')
 ylabel(r'$h_\plus$ $[10^{-22}]$')
-rc('xtick', labelsize=12)
-rc('ytick', labelsize=12)
-rc('axes', labelsize=14)
+rc('xtick', labelsize=11)
+rc('ytick', labelsize=11)
+rc('axes', labelsize=13)
 
 savefig('original_waveformsurr.pdf')
 
@@ -80,7 +80,7 @@ close()
 
 
 # plot of oscillatory + memory components
-fig = figure(figsize=(12, 6))
+fig = figure(figsize=(9, 4.5))
 
 fig.add_subplot(2, 1, 2)
 plot(times, (oscillatory['plus']+memory['plus'])*(10.0**22.0), color='r', label=r'Waveform $\plus$ Memory')
@@ -89,10 +89,10 @@ axhline(0, linestyle=':', color='k')
 xlim(-0.04, 0.015)
 xlabel('Time (s)')
 ylabel(r'$h_\plus$ $[10^{-22}]$')
-legend(loc='upper left')
-rc('xtick', labelsize=12)
-rc('ytick', labelsize=12)
-rc('axes', labelsize=14)
+legend(loc='upper left', prop={'size':13})
+rc('xtick', labelsize=11)
+rc('ytick', labelsize=11)
+rc('axes', labelsize=13)
 
 
 fig.add_subplot(2, 1, 1)
@@ -101,10 +101,10 @@ plot(times, memory['plus']*(10.0**22.0), linestyle='dotted', color='b', label='M
 axhline(0, linestyle=':', color='k')
 xlim(-0.5, times[-1])
 ylabel(r'$h_\plus$ $[10^{-22}]$')
-legend(loc='upper left')
-rc('xtick', labelsize=12)
-rc('ytick', labelsize=12)
-rc('axes', labelsize=14)
+legend(loc='upper left', prop={'size':13})
+rc('xtick', labelsize=11)
+rc('ytick', labelsize=11)
+rc('axes', labelsize=13)
 
 savefig('combinedsurr.pdf')
 
@@ -120,7 +120,7 @@ close()
 start_time=-0.51
 end_time=0.02
 times=np.linspace(start_time, end_time, 10001)
-approx = gwmemory.waveforms.approximant.Approximant(q=q, name="IMRPhenomD", spin_1=S1, spin_2=S2, total_mass=M, distance=700, times=times)
+approx = gwmemory.waveforms.approximant.Approximant(q=q, name="IMRPhenomD", spin_1=S1, spin_2=S2, total_mass=M, distance=d, times=times)
 
 # GW waveform only definition
 # A surrogate object has the following attributes: time_domain_memory (a
@@ -134,17 +134,18 @@ oscillatoryphenom, timesphenom = approx.time_domain_oscillatory(inc=inc, phase=p
 memoryphenom, timesphenom = approx.time_domain_memory(inc=inc, phase=pol)
 
 # Plot of Superposed GW memory using IMRPhenomD and NRSur7dq2
-fig = figure(figsize=(12, 6))
+fig = figure(figsize=(4.5, 4.5))
 plot(times, memory['plus']*(10**22), color='r', label='NRSur7dq2')
-plot(timesphenom, memoryphenom['plus']*(10**22), color='b', label='IMRPhenomD')
+plot(timesphenom, memoryphenom['plus']*(10**22), color='b', linestyle='dotted', label='IMRPhenomD')
 axhline(0, linestyle=':', color='k')
-xlim(-0.5, 0.02)
+xlim(-0.08, 0.02)
 xlabel('Time (s)')
 ylabel(r'$h_\plus$ $[10^{-22}]$')
-legend(loc='upper left', prop={'size': 20})
-rc('xtick', labelsize=12)
-rc('ytick', labelsize=12)
-rc('axes', labelsize=14)
+legend(loc='upper left', prop={'size': 12})
+rc('xtick', labelsize=11)
+rc('ytick', labelsize=11)
+rc('axes', labelsize=13)
+
 savefig('imrsurrmemory.pdf')
 
 tight_layout()
@@ -152,17 +153,14 @@ show()
 close()
 
 # Plot of superposed IMRPhenomD and NRSurr7dq2 waveforms
-fig = figure(figsize=(12, 6))
+fig = figure(figsize=(4.5, 4.5))
 plot(times, oscillatory['plus']*(10.0**22.0), color='r', label='NRSur7dq2')
 plot(timesphenom, oscillatoryphenom['plus']*(10.0**22.0), linestyle='dotted', color='b', label='IMRPhenomD')
 axhline(0, linestyle=':', color='k')
-xlim(-0.5, 0.02)
+xlim(-.08, 0.02)
 xlabel('Time (s)')
-legend(loc='upper left', prop={'size': 20})
+legend(loc='lower left', prop={'size': 13})
 ylabel(r'$h_\plus$ $[10^{-22}]$')
-rc('xtick', labelsize=12)
-rc('ytick', labelsize=12)
-rc('axes', labelsize=14)
 
 savefig('imr_surr_waveforms.pdf')
 

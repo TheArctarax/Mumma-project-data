@@ -1,0 +1,114 @@
+16:29 INFO    : Injected signal in H1:
+16:29 INFO    :   optimal SNR = nan
+16:29 INFO    :   matched filter SNR = nan+nanj
+16:29 INFO    :   psi = 0.0
+16:29 INFO    :   d = 600.0
+16:29 INFO    :   geocent_time = 0.0
+16:29 INFO    :   S2 = [0.0, 0.0, 0.0]
+16:29 INFO    :   S1 = [0.0, 0.0, 0.0]
+16:29 INFO    :   M = 60.0
+16:29 INFO    :   memory_constant = 1.0
+16:29 INFO    :   pol = 0.0
+16:29 INFO    :   ra = 0.0
+16:29 INFO    :   dec = 0.0
+16:29 INFO    :   inc = 1.57079632679
+16:29 INFO    : Injected signal in L1:
+16:29 INFO    :   optimal SNR = nan
+16:29 INFO    :   matched filter SNR = nan+nanj
+16:29 INFO    :   psi = 0.0
+16:29 INFO    :   d = 600.0
+16:29 INFO    :   geocent_time = 0.0
+16:29 INFO    :   S2 = [0.0, 0.0, 0.0]
+16:29 INFO    :   S1 = [0.0, 0.0, 0.0]
+16:29 INFO    :   M = 60.0
+16:29 INFO    :   memory_constant = 1.0
+16:29 INFO    :   pol = 0.0
+16:29 INFO    :   ra = 0.0
+16:29 INFO    :   dec = 0.0
+16:29 INFO    :   inc = 1.57079632679
+16:29 INFO    : Injected signal in V1:
+16:29 INFO    :   optimal SNR = nan
+16:29 INFO    :   matched filter SNR = nan+nanj
+16:29 INFO    :   psi = 0.0
+16:29 INFO    :   d = 600.0
+16:29 INFO    :   geocent_time = 0.0
+16:29 INFO    :   S2 = [0.0, 0.0, 0.0]
+16:29 INFO    :   S1 = [0.0, 0.0, 0.0]
+16:29 INFO    :   M = 60.0
+16:29 INFO    :   memory_constant = 1.0
+16:29 INFO    :   pol = 0.0
+16:29 INFO    :   ra = 0.0
+16:29 INFO    :   dec = 0.0
+16:29 INFO    :   inc = 1.57079632679
+16:29 WARNING : The waveform_generator start_time is not equal to that of the provided interferometers. Overwriting the waveform_generator.
+16:29 INFO    : Running for label 'test1', output will be saved to '~/bilby_output'
+16:29 INFO    : Using LAL version Branch: None;Tag: lalsuite-v6.70.0;Id: 1f45f4aeb9254841b06113fe05132d5196293a3a;;Builder: Unknown User <>;Repository status: CLEAN: All modifications committed
+16:29 INFO    : Search parameters:
+16:29 INFO    :   memory_constant = Uniform(latex_label='$\\lambda$', name='$\\lambda$', maximum=1, minimum=0, boundary=None, unit=None)
+16:29 INFO    :   psi = 0.0
+16:29 INFO    :   d = 600.0
+16:29 INFO    :   geocent_time = 0.0
+16:29 INFO    :   M = 60.0
+16:29 INFO    :   pol = 0.0
+16:29 INFO    :   ra = 0.0
+16:29 INFO    :   dec = 0.0
+16:29 INFO    :   inc = 1.57079632679
+16:29 WARNING : Cannot sample from S2, 'list' object has no attribute 'sample'
+16:29 WARNING : Cannot sample from S1, 'list' object has no attribute 'sample'
+13:18 INFO    : Injected signal in H1:
+13:18 INFO    :   optimal SNR = nan
+13:18 INFO    :   matched filter SNR = nan+nanj
+13:18 INFO    :   psi = 0.0
+13:18 INFO    :   d = 600.0
+13:18 INFO    :   geocent_time = 0.0
+13:18 INFO    :   S2 = [0.0, 0.0, 0.0]
+13:18 INFO    :   S1 = [0.0, 0.0, 0.0]
+13:18 INFO    :   M = 60.0
+13:18 INFO    :   memory_constant = 1.0
+13:18 INFO    :   pol = 0.0
+13:18 INFO    :   ra = 0.0
+13:18 INFO    :   dec = 0.0
+13:18 INFO    :   inc = 1.57079632679
+13:18 INFO    : Injected signal in L1:
+13:18 INFO    :   optimal SNR = nan
+13:18 INFO    :   matched filter SNR = nan+nanj
+13:18 INFO    :   psi = 0.0
+13:18 INFO    :   d = 600.0
+13:18 INFO    :   geocent_time = 0.0
+13:18 INFO    :   S2 = [0.0, 0.0, 0.0]
+13:18 INFO    :   S1 = [0.0, 0.0, 0.0]
+13:18 INFO    :   M = 60.0
+13:18 INFO    :   memory_constant = 1.0
+13:18 INFO    :   pol = 0.0
+13:18 INFO    :   ra = 0.0
+13:18 INFO    :   dec = 0.0
+13:18 INFO    :   inc = 1.57079632679
+13:18 INFO    : Injected signal in V1:
+13:18 INFO    :   optimal SNR = nan
+13:18 INFO    :   matched filter SNR = nan+nanj
+13:18 INFO    :   psi = 0.0
+13:18 INFO    :   d = 600.0
+13:18 INFO    :   geocent_time = 0.0
+13:18 INFO    :   S2 = [0.0, 0.0, 0.0]
+13:18 INFO    :   S1 = [0.0, 0.0, 0.0]
+13:18 INFO    :   M = 60.0
+13:18 INFO    :   memory_constant = 1.0
+13:18 INFO    :   pol = 0.0
+13:18 INFO    :   ra = 0.0
+13:18 INFO    :   dec = 0.0
+13:18 INFO    :   inc = 1.57079632679
+13:18 WARNING : The waveform_generator start_time is not equal to that of the provided interferometers. Overwriting the waveform_generator.
+13:18 INFO    : Running for label 'test1', output will be saved to '~/bilby_output'
+13:18 INFO    : Using LAL version Branch: None;Tag: lalsuite-v6.70.0;Id: 1f45f4aeb9254841b06113fe05132d5196293a3a;;Builder: Unknown User <>;Repository status: CLEAN: All modifications committed
+13:18 INFO    : Search parameters:
+13:18 INFO    :   memory_constant = Uniform(latex_label='$\\lambda$', name='$\\lambda$', maximum=1, minimum=0, boundary=None, unit=None)
+13:18 INFO    :   psi = 0.0
+13:18 INFO    :   d = 600.0
+13:18 INFO    :   geocent_time = 0.0
+13:18 INFO    :   M = 60.0
+13:18 INFO    :   pol = 0.0
+13:18 INFO    :   ra = 0.0
+13:18 INFO    :   dec = 0.0
+13:18 INFO    :   inc = 1.57079632679
+13:18 WARNING : Cannot sample from S2, 'list' object has no attribute 'sample'
+13:18 WARNING : Cannot sample from S1, 'list' object has no attribute 'sample'

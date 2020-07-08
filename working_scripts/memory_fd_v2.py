@@ -7,6 +7,7 @@ from matplotlib.pyplot import *
 import numpy as np
 import pandas as pd
 from matplotlib.pyplot import rcParams
+from scipy.signal import get_window
 
 rcParams["font.family"] = "Times New Roman"
 rcParams["axes.unicode_minus"] = False
@@ -28,6 +29,9 @@ def frequency_domain_transform(time_domain_strain, times):
     frequency_domain_strain = dict()
 
     for key in time_domain_strain:
+        window = get_window(("tukey", 0), time_domain_strain[key].size)
+        time_domain_strain[key] = time_domain_strain[key] * window
+
         frequency_domain_strain[key], frequencies = utils.nfft(
             time_domain_strain[key], sampling_frequency
         )
@@ -138,18 +142,18 @@ grid(False)
 savefig("waveform_asd_waveform.pdf")
 
 tight_layout()
-# show()
+show()
 close()
 
 
 # Plot of the frequency domain memory.
 
-# Q5 : Do the same for the memory part.
+# Do the same for the memory part.
 fig = figure(figsize=(6, 6))
 loglog(
     frequencies,
     abs(memory_tilde["plus"][:] * np.sqrt(frequencies[:])),
-    color="r",
+    color="b",
 )
 
 xlim(0, 5000)
@@ -163,13 +167,13 @@ grid(False)
 savefig("waveform_asd_mem.pdf")
 
 tight_layout()
-# show()
+show()
 close()
 
 
 # Plot of the frequency domain waveform + memory.
 
-# Q6 : And of course, again for the waveform + memory.
+# And of course, again for the waveform + memory.
 fig = figure(figsize=(6, 6))
 loglog(
     frequencies,
@@ -334,17 +338,21 @@ loglog(
     dfl["asd"],
     color="gwpy:ligo-livingston",
     zorder=0,
-    label="Livingston",
+    label="Livingston Noise",
 )
 loglog(
     dfh["frequency"],
     dfh["asd"],
     color="gwpy:ligo-hanford",
     zorder=0,
-    label="Hanford",
+    label="Hanford Noise",
 )
 loglog(
-    dfv["frequency"], dfv["asd"], color="gwpy:virgo", zorder=0, label="Virgo"
+    dfv["frequency"],
+    dfv["asd"],
+    color="gwpy:virgo",
+    zorder=0,
+    label="Virgo Noise",
 )
 
 xlim(20, 1000)
@@ -353,11 +361,11 @@ xlabel("Frequency [Hz]")
 # ylabel(r'ASD [Hz$^{-1/2}$]')
 xscale("log")
 yscale("log")
-legend(loc="upper right", prop={"size": 11})
+legend(loc="upper right", prop={"size": 16})
 grid(False)
 
 savefig("waveform_asd_wave_and_mem_and_noise.pdf")
 
 tight_layout()
-show()
+# show()
 close()

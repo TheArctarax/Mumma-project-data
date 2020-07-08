@@ -16,7 +16,7 @@ into LIGO modelled memory.
 # going to inject the signal into
 duration = 4.0
 sampling_frequency = 2048.0
-f_lower = 15
+f_lower = 15.0
 
 # Specify the output directory and the name of the simulation.
 outdir = "/home/darin/bilby_output"

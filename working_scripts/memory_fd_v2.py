@@ -41,7 +41,7 @@ def frequency_domain_transform(time_domain_strain, times):
 
 # Variable assignments for first plot
 f_lower = 18.0
-f_upper = 313.0
+f_upper = 310.0
 S1 = [0.0, 0.0, 0.0]
 S2 = [0.0, 0.0, 0.0]
 inc = np.pi / 2
@@ -51,8 +51,8 @@ M = 66.2
 q = 1.16
 
 # Variable assignments for second plot
-f_lower_2 = 15.0
-f_upper_2 = 265.0
+f_lower_2 = 18.0
+f_upper_2 = 270.0
 S1_2 = [0.0, 0.0, 0.0]
 S2_2 = [0.0, 0.0, 0.0]
 inc_2 = np.pi / 2
@@ -142,7 +142,7 @@ grid(False)
 savefig("waveform_asd_waveform.pdf")
 
 tight_layout()
-show()
+# show()
 close()
 
 
@@ -167,7 +167,7 @@ grid(False)
 savefig("waveform_asd_mem.pdf")
 
 tight_layout()
-show()
+# show()
 close()
 
 
@@ -201,26 +201,23 @@ close()
 
 # Plot of the frequency domain waveform, memory, and noise curves.
 
-# begin by generating truncated frequency array to remove extraneous Fourier modulation outside the region of interest.
-f_new = np.zeros(len(frequencies))
-
+# begin by removing extraneous Fourier modulation outside the region of interest.
 for i in range(len(frequencies)):
     if frequencies[i] > f_upper:
-        f_new[i] = f_upper
+        oscillatory_tilde['plus'][i] = 0
     elif frequencies[i] < f_lower:
-        f_new[i] = f_lower
+        oscillatory_tilde['plus'][i] = 0
     else:
-        f_new[i] = frequencies[i]
-
-f_new_2 = np.zeros(len(frequencies_2))
+        oscillatory_tilde['plus'][i] = oscillatory_tilde['plus'][i]
 
 for i in range(len(frequencies_2)):
     if frequencies_2[i] > f_upper_2:
-        f_new_2[i] = f_upper_2
+        oscillatory_tilde_2['plus'][i] = 0
     elif frequencies_2[i] < f_lower_2:
-        f_new_2[i] = f_lower_2
+        oscillatory_tilde_2['plus'][i] = 0
     else:
-        f_new_2[i] = frequencies_2[i]
+        oscillatory_tilde_2['plus'][i] = oscillatory_tilde_2['plus'][i]
+
 
 # Finally, do the same for the full plot.
 rc("xtick", labelsize=12)
@@ -230,7 +227,7 @@ fig = figure(figsize=(9, 4))
 
 fig.add_subplot(1, 2, 1)
 loglog(
-    f_new,
+    frequencies,
     abs(
         (oscillatory_tilde["plus"][:] + memory_tilde["plus"][:])
         * np.sqrt(frequencies)
@@ -244,7 +241,7 @@ loglog(
     frequencies,
     abs(memory_tilde["plus"] * np.sqrt(frequencies)),
     color="b",
-    linewidth=8,
+    linewidth=6,
     zorder=1,
 )
 
@@ -271,11 +268,26 @@ dfv = pd.read_csv(
     names=["frequency", "asd"],
 )
 
-loglog(dfl["frequency"], dfl["asd"], color="gwpy:ligo-livingston", zorder=0)
-loglog(dfh["frequency"], dfh["asd"], color="gwpy:ligo-hanford", zorder=0)
-loglog(dfv["frequency"], dfv["asd"], color="gwpy:virgo", zorder=0)
+loglog(
+    dfl["frequency"], 
+    dfl["asd"], 
+    color="gwpy:ligo-livingston", 
+    zorder=0
+)
+loglog(
+    dfh["frequency"], 
+    dfh["asd"], 
+    color="gwpy:ligo-hanford", 
+    zorder=0
+)
+loglog(
+    dfv["frequency"], 
+    dfv["asd"], 
+    color="gwpy:virgo", 
+    zorder=0
+)
 
-xlim(20, 1000)
+xlim(10, 1000)
 ylim(5.5 * (10 ** (-24)), 10 ** (-19))
 xlabel("Frequency [Hz]")
 ylabel(r"ASD [Hz$^{-1/2}$]")
@@ -285,13 +297,13 @@ yscale("log")
 grid(False)
 
 
-# First plot was just GW150814. This plot ensures memory is detectable.
+# First plot was just GW150814. This plot illustrates memory detectability.
 rc("xtick", labelsize=12)
 rc("ytick", labelsize=12)
 rc("axes", labelsize=14)
 fig.add_subplot(1, 2, 2)
 loglog(
-    f_new_2,
+    frequencies_2,
     abs(
         (oscillatory_tilde_2["plus"][:] + memory_tilde_2["plus"][:])
         * np.sqrt(frequencies_2)
@@ -306,7 +318,7 @@ loglog(
     frequencies_2,
     abs(memory_tilde_2["plus"] * np.sqrt(frequencies_2)),
     color="b",
-    linewidth=8,
+    linewidth=6,
     zorder=1,
     label="Memory",
 )
@@ -355,17 +367,17 @@ loglog(
     label="Virgo Noise",
 )
 
-xlim(20, 1000)
+xlim(10, 1000)
 ylim(5.5 * (10 ** (-24)), 10 ** (-19))
 xlabel("Frequency [Hz]")
 # ylabel(r'ASD [Hz$^{-1/2}$]')
 xscale("log")
 yscale("log")
-legend(loc="upper right", prop={"size": 16})
+legend(loc="upper right", prop={"size": 10})
 grid(False)
 
 savefig("waveform_asd_wave_and_mem_and_noise.pdf")
 
 tight_layout()
-# show()
+show()
 close()

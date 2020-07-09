@@ -61,29 +61,30 @@ osc_window_type = ("tukey", 0.1)
 mem_window_type = ("kaiser", 0.001)
 
 """
-Window Types provided by scipy.signal.windows.get_window [https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.windows.get_window.html#scipy.signal.windows.get_window]
+Window Types provided by scipy.signal.windows.get_window
+[https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.windows.get_window.html#scipy.signal.windows.get_window]
 ------------------------------------------------------------------------------
 
-'boxcar'
-'triang'
-'blackman'
-'hamming'
-'hann'
-'bartlett'
-'flattop'
-'parzen'
-'bohman'
-'blackmanharris'
-'nuttall'
-'barthann'
-('kaiser', beta)
-('gausian', std_dev)
-('general_gaussian', power, width)
-('slepian', width)
-('dpss', norm half-bandwidth)
-('chebwin', attenuation)
-('exponential', decay constant)
-('tukey', taper fraction)
+'boxcar': no window
+'triang': triangular window, nonzero endpoints
+'blackman': 3rd order cosine sum, minimizes leakage, almost as good as Kaiser window at doing so
+'hamming': single cosine with nonzero endpoints, minimizes first side lobe
+'hann': hamming window but with zero endpoints
+'bartlett': triangular window but with zero enpoints, used to taper with little fd modulation
+'flattop': 5th order cosine sum, used to measure signal amplitude, makes main lobe flat
+'parzen': not sure about this one
+'bohman': or this one, either
+'blackmanharris': generalized hamming = more cosines, hamming but better
+'nuttall': similar to blackman-harris
+'barthann': combo of bartlett and hann
+('kaiser', beta): formed from Bessel functions, beta=0(rect), 5(hamming), 6(hann), 8.6(blackman)
+('gaussian', std_dev): use only in special cases
+('general_gaussian', power, width): same here
+('slepian', width): maximizes power in main lobe
+('dpss', norm half-bandwidth): first term is slepian window
+('chebwin', attenuation): uses Chebyshev polynomials, kinda complicated
+('exponential', decay constant): seems like it will cut power too quickly
+('tukey', taper fraction): tf=0(rect), 1(hann)
 
 ------------------------------------------------------------------------------
 """

@@ -112,3 +112,279 @@
 13:18 INFO    :   inc = 1.57079632679
 13:18 WARNING : Cannot sample from S2, 'list' object has no attribute 'sample'
 13:18 WARNING : Cannot sample from S1, 'list' object has no attribute 'sample'
+12:38 INFO    : Injected signal in H1:
+12:38 INFO    :   optimal SNR = nan
+12:38 INFO    :   matched filter SNR = nan+nanj
+12:38 INFO    :   s1z = 0.0
+12:38 INFO    :   s1y = 0.0
+12:38 INFO    :   psi = 0.0
+12:38 INFO    :   d = 600.0
+12:38 INFO    :   geocent_time = 0.0
+12:38 INFO    :   M = 60.0
+12:38 INFO    :   memory_constant = 1.0
+12:38 INFO    :   s1x = 0.0
+12:38 INFO    :   ra = 0.0
+12:38 INFO    :   s2z = 0.0
+12:38 INFO    :   s2x = 0.0
+12:38 INFO    :   dec = 0.0
+12:38 INFO    :   s2y = 0.0
+12:38 INFO    :   inc = 1.57079632679
+12:38 INFO    : Injected signal in L1:
+12:38 INFO    :   optimal SNR = nan
+12:38 INFO    :   matched filter SNR = nan+nanj
+12:38 INFO    :   s1z = 0.0
+12:38 INFO    :   s1y = 0.0
+12:38 INFO    :   psi = 0.0
+12:38 INFO    :   d = 600.0
+12:38 INFO    :   geocent_time = 0.0
+12:38 INFO    :   M = 60.0
+12:38 INFO    :   memory_constant = 1.0
+12:38 INFO    :   s1x = 0.0
+12:38 INFO    :   ra = 0.0
+12:38 INFO    :   s2z = 0.0
+12:38 INFO    :   s2x = 0.0
+12:38 INFO    :   dec = 0.0
+12:38 INFO    :   s2y = 0.0
+12:38 INFO    :   inc = 1.57079632679
+12:38 INFO    : Injected signal in V1:
+12:38 INFO    :   optimal SNR = nan
+12:38 INFO    :   matched filter SNR = nan+nanj
+12:38 INFO    :   s1z = 0.0
+12:38 INFO    :   s1y = 0.0
+12:38 INFO    :   psi = 0.0
+12:38 INFO    :   d = 600.0
+12:38 INFO    :   geocent_time = 0.0
+12:38 INFO    :   M = 60.0
+12:38 INFO    :   memory_constant = 1.0
+12:38 INFO    :   s1x = 0.0
+12:38 INFO    :   ra = 0.0
+12:38 INFO    :   s2z = 0.0
+12:38 INFO    :   s2x = 0.0
+12:38 INFO    :   dec = 0.0
+12:38 INFO    :   s2y = 0.0
+12:38 INFO    :   inc = 1.57079632679
+12:38 WARNING : The waveform_generator start_time is not equal to that of the provided interferometers. Overwriting the waveform_generator.
+12:38 INFO    : Running for label 'test1', output will be saved to '~/bilby_output'
+12:38 INFO    : Using LAL version Branch: None;Tag: lalsuite-v6.70.0;Id: 1f45f4aeb9254841b06113fe05132d5196293a3a;;Builder: Unknown User <>;Repository status: CLEAN: All modifications committed
+12:38 INFO    : Search parameters:
+12:38 INFO    :   memory_constant = Uniform(latex_label='$\\lambda$', name='$\\lambda$', maximum=1, minimum=-1, boundary=None, unit=None)
+12:38 INFO    :   s1z = 0.0
+12:38 INFO    :   s1y = 0.0
+12:38 INFO    :   psi = 0.0
+12:38 INFO    :   d = 600.0
+12:38 INFO    :   geocent_time = 0.0
+12:38 INFO    :   M = 60.0
+12:38 INFO    :   s1x = 0.0
+12:38 INFO    :   ra = 0.0
+12:38 INFO    :   s2z = 0.0
+12:38 INFO    :   s2x = 0.0
+12:38 INFO    :   dec = 0.0
+12:38 INFO    :   s2y = 0.0
+12:38 INFO    :   inc = 1.57079632679
+12:41 INFO    : Single likelihood evaluation took 1.478e+00 s
+12:41 INFO    : Using sampler Dynesty with kwargs {'dlogz': 0.1, 'verbose': True, 'slices': 5, 'first_update': None, 'logl_args': None, 'npdim': None, 'sample': 'unif', 'nlive': 500, 'nact': 5, 'walks': 100, 'logl_max': inf, 'save_bounds': False, 'enlarge': 1.5, 'n_effective': None, 'vol_check': 8.0, 'reflective': None, 'update_interval': 300, 'logl_kwargs': None, 'check_point_delta_t': 600, 'print_func': <bound method Dynesty._print_func of <bilby.core.sampler.dynesty.Dynesty object at 0x128e6ff50>>, 'add_live': True, 'ptform_args': None, 'maxiter': None, 'ptform_kwargs': None, 'bound': 'multi', 'queue_size': None, 'vol_dec': 0.5, 'rstate': None, 'pool': None, 'maxcall': None, 'print_progress': True, 'facc': 0.2, 'live_points': None, 'bootstrap': None, 'maxmcmc': 5000, 'periodic': None, 'use_pool': None}
+12:41 INFO    : Checkpoint every n_check_point = 400
+12:41 INFO    : Using dynesty version 1.0.1
+13:06 WARNING : Injecting signal outside segment, start_time=-3.0, merger time=0.0.
+13:06 INFO    : Injected signal in H1:
+13:06 INFO    :   optimal SNR = nan
+13:06 INFO    :   matched filter SNR = nan+nanj
+13:06 INFO    :   s1z = 0.0
+13:06 INFO    :   s1y = 0.0
+13:06 INFO    :   psi = 0.0
+13:06 INFO    :   d = 600.0
+13:06 INFO    :   geocent_time = 0.0
+13:06 INFO    :   M = 60.0
+13:06 INFO    :   memory_constant = 1.0
+13:06 INFO    :   s1x = 0.0
+13:06 INFO    :   ra = 0.0
+13:06 INFO    :   s2z = 0.0
+13:06 INFO    :   s2x = 0.0
+13:06 INFO    :   dec = 0.0
+13:06 INFO    :   s2y = 0.0
+13:06 INFO    :   inc = 1.57079632679
+13:06 WARNING : Injecting signal outside segment, start_time=-3.0, merger time=0.0.
+13:06 INFO    : Injected signal in L1:
+13:06 INFO    :   optimal SNR = nan
+13:06 INFO    :   matched filter SNR = nan+nanj
+13:06 INFO    :   s1z = 0.0
+13:06 INFO    :   s1y = 0.0
+13:06 INFO    :   psi = 0.0
+13:06 INFO    :   d = 600.0
+13:06 INFO    :   geocent_time = 0.0
+13:06 INFO    :   M = 60.0
+13:06 INFO    :   memory_constant = 1.0
+13:06 INFO    :   s1x = 0.0
+13:06 INFO    :   ra = 0.0
+13:06 INFO    :   s2z = 0.0
+13:06 INFO    :   s2x = 0.0
+13:06 INFO    :   dec = 0.0
+13:06 INFO    :   s2y = 0.0
+13:06 INFO    :   inc = 1.57079632679
+13:06 WARNING : Injecting signal outside segment, start_time=-3.0, merger time=0.0.
+13:06 INFO    : Injected signal in V1:
+13:06 INFO    :   optimal SNR = nan
+13:06 INFO    :   matched filter SNR = nan+nanj
+13:06 INFO    :   s1z = 0.0
+13:06 INFO    :   s1y = 0.0
+13:06 INFO    :   psi = 0.0
+13:06 INFO    :   d = 600.0
+13:06 INFO    :   geocent_time = 0.0
+13:06 INFO    :   M = 60.0
+13:06 INFO    :   memory_constant = 1.0
+13:06 INFO    :   s1x = 0.0
+13:06 INFO    :   ra = 0.0
+13:06 INFO    :   s2z = 0.0
+13:06 INFO    :   s2x = 0.0
+13:06 INFO    :   dec = 0.0
+13:06 INFO    :   s2y = 0.0
+13:06 INFO    :   inc = 1.57079632679
+13:06 WARNING : The waveform_generator start_time is not equal to that of the provided interferometers. Overwriting the waveform_generator.
+13:06 INFO    : Running for label 'test1', output will be saved to '~/bilby_output'
+13:06 INFO    : Using LAL version Branch: None;Tag: lalsuite-v6.70.0;Id: 1f45f4aeb9254841b06113fe05132d5196293a3a;;Builder: Unknown User <>;Repository status: CLEAN: All modifications committed
+13:06 INFO    : Search parameters:
+13:06 INFO    :   memory_constant = Uniform(latex_label='$\\lambda$', name='$\\lambda$', maximum=1, minimum=-1, boundary=None, unit=None)
+13:06 INFO    :   s1z = 0.0
+13:06 INFO    :   s1y = 0.0
+13:06 INFO    :   psi = 0.0
+13:06 INFO    :   d = 600.0
+13:06 INFO    :   geocent_time = 0.0
+13:06 INFO    :   M = 60.0
+13:06 INFO    :   s1x = 0.0
+13:06 INFO    :   ra = 0.0
+13:06 INFO    :   s2z = 0.0
+13:06 INFO    :   s2x = 0.0
+13:06 INFO    :   dec = 0.0
+13:06 INFO    :   s2y = 0.0
+13:06 INFO    :   inc = 1.57079632679
+13:08 INFO    : Single likelihood evaluation took 1.615e+00 s
+13:08 INFO    : Using sampler Dynesty with kwargs {'dlogz': 0.1, 'verbose': True, 'slices': 5, 'first_update': None, 'logl_args': None, 'npdim': None, 'sample': 'unif', 'nlive': 1000, 'nact': 5, 'walks': 100, 'logl_max': inf, 'save_bounds': False, 'enlarge': 1.5, 'n_effective': None, 'vol_check': 8.0, 'reflective': None, 'update_interval': 600, 'logl_kwargs': None, 'check_point_delta_t': 600, 'print_func': <bound method Dynesty._print_func of <bilby.core.sampler.dynesty.Dynesty object at 0x11cea4f50>>, 'add_live': True, 'ptform_args': None, 'maxiter': None, 'ptform_kwargs': None, 'bound': 'multi', 'queue_size': None, 'vol_dec': 0.5, 'rstate': None, 'pool': None, 'maxcall': None, 'print_progress': True, 'facc': 0.2, 'live_points': None, 'bootstrap': None, 'maxmcmc': 5000, 'periodic': None, 'use_pool': None}
+13:08 INFO    : Checkpoint every n_check_point = 400
+13:08 INFO    : Using dynesty version 1.0.1
+13:45 WARNING : Injecting signal outside segment, start_time=-3.0, merger time=0.0.
+13:46 WARNING : Injecting signal outside segment, start_time=-3.0, merger time=0.0.
+13:46 WARNING : Injecting signal outside segment, start_time=-3.0, merger time=0.0.
+14:07 WARNING : Injecting signal outside segment, start_time=-3.0, merger time=0.0.
+14:10 WARNING : Injecting signal outside segment, start_time=-3.0, merger time=0.0.
+14:24 INFO    : Injected signal in H1:
+14:24 INFO    :   optimal SNR = 10.87
+14:24 INFO    :   matched filter SNR = 10.13+0.56j
+14:24 INFO    :   s1z = 0.0
+14:24 INFO    :   s1y = 0.0
+14:24 INFO    :   psi = 0.0
+14:24 INFO    :   d = 600.0
+14:24 INFO    :   geocent_time = 0.0
+14:24 INFO    :   M = 60.0
+14:24 INFO    :   memory_constant = 1.0
+14:24 INFO    :   q = 1.0
+14:24 INFO    :   s1x = 0.0
+14:24 INFO    :   ra = 0.0
+14:24 INFO    :   s2z = 0.0
+14:24 INFO    :   s2x = 0.0
+14:24 INFO    :   dec = 0.0
+14:24 INFO    :   s2y = 0.0
+14:24 INFO    :   inc = 1.57079632679
+14:24 INFO    : Injected signal in L1:
+14:24 INFO    :   optimal SNR = 17.40
+14:24 INFO    :   matched filter SNR = 16.87+1.96j
+14:24 INFO    :   s1z = 0.0
+14:24 INFO    :   s1y = 0.0
+14:24 INFO    :   psi = 0.0
+14:24 INFO    :   d = 600.0
+14:24 INFO    :   geocent_time = 0.0
+14:24 INFO    :   M = 60.0
+14:24 INFO    :   memory_constant = 1.0
+14:24 INFO    :   q = 1.0
+14:24 INFO    :   s1x = 0.0
+14:24 INFO    :   ra = 0.0
+14:24 INFO    :   s2z = 0.0
+14:24 INFO    :   s2x = 0.0
+14:24 INFO    :   dec = 0.0
+14:24 INFO    :   s2y = 0.0
+14:24 INFO    :   inc = 1.57079632679
+14:24 INFO    : Running for label 'test1', output will be saved to '~/bilby_output'
+14:24 INFO    : Using LAL version Branch: None;Tag: lalsuite-v6.70.0;Id: 1f45f4aeb9254841b06113fe05132d5196293a3a;;Builder: Unknown User <>;Repository status: CLEAN: All modifications committed
+14:24 INFO    : Search parameters:
+14:24 INFO    :   memory_constant = Uniform(latex_label='$\\lambda$', name='$\\lambda$', maximum=1, minimum=-1, boundary=None, unit=None)
+14:24 INFO    :   s1z = 0.0
+14:24 INFO    :   s1y = 0.0
+14:24 INFO    :   psi = 0.0
+14:24 INFO    :   d = 600.0
+14:24 INFO    :   geocent_time = 0.0
+14:24 INFO    :   M = 60.0
+14:24 INFO    :   q = 1.0
+14:24 INFO    :   s1x = 0.0
+14:24 INFO    :   ra = 0.0
+14:24 INFO    :   s2z = 0.0
+14:24 INFO    :   s2x = 0.0
+14:24 INFO    :   dec = 0.0
+14:24 INFO    :   s2y = 0.0
+14:24 INFO    :   inc = 1.57079632679
+14:46 INFO    : Injected signal in H1:
+14:46 INFO    :   optimal SNR = 10.55
+14:46 INFO    :   matched filter SNR = 10.29-0.72j
+14:46 INFO    :   s1z = 0.0
+14:46 INFO    :   s1y = 0.0
+14:46 INFO    :   psi = 0.0
+14:46 INFO    :   d = 600.0
+14:46 INFO    :   geocent_time = 0.0
+14:46 INFO    :   M = 60.0
+14:46 INFO    :   memory_constant = 1.0
+14:46 INFO    :   q = 1.0
+14:46 INFO    :   s1x = 0.0
+14:46 INFO    :   ra = 0.0
+14:46 INFO    :   s2z = 0.0
+14:46 INFO    :   s2x = 0.0
+14:46 INFO    :   dec = 0.0
+14:46 INFO    :   s2y = 0.0
+14:46 INFO    :   inc = 1.57079632679
+14:46 INFO    : Injected signal in L1:
+14:46 INFO    :   optimal SNR = 16.88
+14:46 INFO    :   matched filter SNR = 15.69+0.70j
+14:46 INFO    :   s1z = 0.0
+14:46 INFO    :   s1y = 0.0
+14:46 INFO    :   psi = 0.0
+14:46 INFO    :   d = 600.0
+14:46 INFO    :   geocent_time = 0.0
+14:46 INFO    :   M = 60.0
+14:46 INFO    :   memory_constant = 1.0
+14:46 INFO    :   q = 1.0
+14:46 INFO    :   s1x = 0.0
+14:46 INFO    :   ra = 0.0
+14:46 INFO    :   s2z = 0.0
+14:46 INFO    :   s2x = 0.0
+14:46 INFO    :   dec = 0.0
+14:46 INFO    :   s2y = 0.0
+14:46 INFO    :   inc = 1.57079632679
+14:46 INFO    : Running for label 'test1', output will be saved to '~/bilby_output'
+14:46 INFO    : Using LAL version Branch: None;Tag: lalsuite-v6.70.0;Id: 1f45f4aeb9254841b06113fe05132d5196293a3a;;Builder: Unknown User <>;Repository status: CLEAN: All modifications committed
+14:46 INFO    : Search parameters:
+14:46 INFO    :   memory_constant = Uniform(latex_label='$\\lambda$', name='$\\lambda$', maximum=1, minimum=-1, boundary=None, unit=None)
+14:46 INFO    :   s1z = 0.0
+14:46 INFO    :   s1y = 0.0
+14:46 INFO    :   psi = 0.0
+14:46 INFO    :   d = 600.0
+14:46 INFO    :   geocent_time = 0.0
+14:46 INFO    :   M = 60.0
+14:46 INFO    :   q = 1.0
+14:46 INFO    :   s1x = 0.0
+14:46 INFO    :   ra = 0.0
+14:46 INFO    :   s2z = 0.0
+14:46 INFO    :   s2x = 0.0
+14:46 INFO    :   dec = 0.0
+14:46 INFO    :   s2y = 0.0
+14:46 INFO    :   inc = 1.57079632679
+14:48 INFO    : Single likelihood evaluation took 9.401e-01 s
+14:48 INFO    : Using sampler Dynesty with kwargs {'dlogz': 0.1, 'verbose': True, 'slices': 5, 'first_update': None, 'logl_args': None, 'npdim': None, 'sample': 'rwalk', 'nlive': 1000, 'nact': 5, 'walks': 100, 'logl_max': inf, 'save_bounds': False, 'enlarge': 1.5, 'n_effective': None, 'vol_check': 8.0, 'reflective': None, 'update_interval': 600, 'logl_kwargs': None, 'check_point_delta_t': 600, 'print_func': <bound method Dynesty._print_func of <bilby.core.sampler.dynesty.Dynesty object at 0x1061a9e10>>, 'add_live': True, 'ptform_args': None, 'maxiter': None, 'ptform_kwargs': None, 'bound': 'multi', 'queue_size': None, 'vol_dec': 0.5, 'rstate': None, 'pool': None, 'maxcall': None, 'print_progress': True, 'facc': 0.2, 'live_points': None, 'bootstrap': None, 'maxmcmc': 5000, 'periodic': None, 'use_pool': None}
+14:48 INFO    : Checkpoint every n_check_point = 600
+14:48 INFO    : Using dynesty version 1.0.1
+15:11 INFO    : Using the bilby-implemented rwalk sample method with ACT estimated walks
+15:39 INFO    : Writing checkpoint file ~/bilby_output/test1_resume.pickle
+16:00 INFO    : Writing checkpoint file ~/bilby_output/test1_resume.pickle
+16:00 INFO    : Sampling time: 0:48:49.648753
+16:00 INFO    : Summary of results:
+nsamples: 3354
+log_noise_evidence: -16365.337
+log_evidence: -16189.954 +/-    nan
+log_bayes_factor: 175.383 +/-    nan
+

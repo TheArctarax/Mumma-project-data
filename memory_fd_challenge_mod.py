@@ -37,8 +37,8 @@ def frequency_domain_transform(time_domain_strain, times):
   frequency_domain_strain = dict()
 
   for key in time_domain_strain:
-   # window = get_window('hann', time_domain_strain[key].size)
-   # time_domain_strain[key] = time_domain_strain[key] * window  
+    window = get_window(("tukey", 0.007), time_domain_strain[key].size)
+    time_domain_strain[key] = time_domain_strain[key] * window  
     frequency_domain_strain[key], frequencies =\
       utils.nfft(time_domain_strain[key], sampling_frequency)
 
@@ -173,8 +173,8 @@ loglog(dfl['frequency'], dfl['asd'], color='tab:blue', zorder=0 , label='L1')
 loglog(dfh['frequency'], dfh['asd'], color='tab:red',zorder=0 , label='H1')
 loglog(dfv['frequency'], dfv['asd'], color='tab:purple', zorder=0, label='V1')
 
-xlim(10, 1000)
-ylim(10**(-24), 10**(-21))
+xlim(10, 3000)
+ylim(10**(-25), 10**(-21))
 xlabel('Frequency [Hz]')
 ylabel(r'ASD $[Hz$^{-1/2}$]$')
 xscale('log')

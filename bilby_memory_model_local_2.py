@@ -18,13 +18,13 @@ into LIGO modelled memory.
 
 # Set the parameters of the data segment that we're
 # going to inject the signal into
-duration = 2.
+duration = 1.
 sampling_frequency = 4096
 f_lower = 15.0
 
 # Specify the output directory and the name of the simulation.
 outdir = "/Users/alvinli/bilby_output"
-label = "test_t_domain_d5_M60_trial_2"
+label = "test_f_domain_d100_M60"
 bilby.core.utils.setup_logger(outdir=outdir, label=label)
 
 
@@ -38,7 +38,7 @@ def frequency_domain_transform(time_domain_strain, times):
   return frequency_domain_strain, frequencies
 
 def memory_time_model(times, q, s1x, s2x, s1y, s2y, s1z, s2z, d, M, psi, inc, geocent_time, memory_constant):
-    surr_times = np.linspace(-1., 0.0, 4096*1.)
+    surr_times = np.linspace(-0.5, 0.0, 4096*0.5)
     surr = gwmemory.waveforms.surrogate.Surrogate(q=q, spin_1=[s1x, s1y, s1z], spin_2=[s2x, s2y, s2z], total_mass=M, distance=d, times=surr_times)
     oscillatory, surr_times = surr.time_domain_oscillatory(inc=inc, phase=psi)
     memory, surr_times = surr.time_domain_memory(inc=inc, phase=psi)
@@ -115,7 +115,7 @@ injection_parameters = dict(
     s2y=0.0,
     s1z=0.0,
     s2z=0.0,
-    d=5,
+    d=400,
     q=1.,
     inc=np.pi / 2,
     psi=0.0,
@@ -128,7 +128,7 @@ injection_parameters = dict(
 # Create the waveform_generator using a LAL BinaryBlackHole source function
 waveform = bilby.gw.waveform_generator.WaveformGenerator(
     duration=duration, sampling_frequency=sampling_frequency,
-    time_domain_source_model=memory_time_model,
+    frequency_domain_source_model=memory_frequency_model,
     start_time=injection_parameters['geocent_time'] - 0.5)
 
 
@@ -171,7 +171,8 @@ result = bilby.run_sampler(
     sampler="dynesty",
     use_ratio=True,
     plot=True,
-    sample="unif",
+    npoints=100,
+    sample="rwalk",
     verbose=True,
     injection_parameters=injection_parameters,
     outdir=outdir,

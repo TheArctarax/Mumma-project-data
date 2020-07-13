@@ -65,7 +65,7 @@ Window Types provided by scipy.signal.windows.get_window
 [https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.windows.get_window.html#scipy.signal.windows.get_window]
 ------------------------------------------------------------------------------
 
-'boxcar': no window
+'boxcar': rectangular window = no window (essentially)
 'triang': triangular window, nonzero endpoints
 'blackman': 3rd order cosine sum, minimizes leakage, almost as good as Kaiser window at doing so
 'hamming': single cosine with nonzero endpoints, minimizes first side lobe

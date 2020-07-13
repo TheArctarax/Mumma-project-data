@@ -23,14 +23,15 @@ Noise asd's come from noise_curve.py
 
 # GWmemory natively features a frequency domain converter for memory but not for waveforms.
 # This method fixes that problem by following the same structure as frequency_domain_memory().
-def frequency_domain_transform(time_domain_strain, times):
+def frequency_domain_transform(time_domain_strain, times, window_type=None):
     sampling_frequency = 1 / (times[1] - times[0])
     frequencies = None
     frequency_domain_strain = dict()
 
     for key in time_domain_strain:
-        window = get_window(("tukey", 0), time_domain_strain[key].size)
-        time_domain_strain[key] = time_domain_strain[key] * window
+        if window_type != None:
+            window = get_window(window_type, time_domain_strain[key].size)
+            time_domain_strain[key] = time_domain_strain[key] * window
 
         frequency_domain_strain[key], frequencies = utils.nfft(
             time_domain_strain[key], sampling_frequency
@@ -49,6 +50,8 @@ pol = 0.0
 d = 420.0
 M = 66.2
 q = 1.16
+osc_window_type = ('tukey', 0.1)
+mem_window_type = ('kaiser', 0.1)
 
 # Variable assignments for second plot
 f_lower_2 = 18.0
@@ -60,7 +63,37 @@ pol_2 = 0.0
 d_2 = 20.0
 M_2 = 80.0
 q_2 = 1.0
+osc_window_type_2 = ('tukey', 0.1)
+mem_window_type_2 = ('kaiser', 0.1)
 
+"""
+Window Types provided by scipy.signal.windows.get_window
+[https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.windows.get_window.html#scipy.signal.windows.get_window]
+------------------------------------------------------------------------------
+
+'boxcar': rectangular window = no window (essentially)
+'triang': triangular window, nonzero endpoints
+'blackman': 3rd order cosine sum, minimizes leakage, almost as good as Kaiser window at doing so
+'hamming': single cosine with nonzero endpoints, minimizes first side lobe
+'hann': hamming window but with zero endpoints
+'bartlett': triangular window but with zero endpoints, used to taper with little fd modulation
+'flattop': 5th order cosine sum, used to measure signal amplitude, makes main lobe flat
+'parzen': not sure about this one
+'bohman': or this one, either
+'blackmanharris': generalized hamming = more cosines, hamming but better
+'nuttall': similar to blackman-harris
+'barthann': combo of bartlett and hann
+('kaiser', beta): formed from Bessel functions, beta=0(rect), 5(hamming), 6(hann), 8.6(blackman)
+('gaussian', std_dev): use only in special cases
+('general_gaussian', power, width): same here
+('slepian', width): maximizes power in main lobe
+('dpss', norm half-bandwidth): first term is slepian window
+('chebwin', attenuation): uses Chebyshev polynomials, kinda complicated
+('exponential', decay constant): seems like it will cut power too quickly
+('tukey', taper fraction): tf=0(rect), 1(hann)
+
+------------------------------------------------------------------------------
+"""
 
 # Sample space definition for the memory's t-axis.
 start_time = -0.51
@@ -104,9 +137,9 @@ oscillatory_2, times_2 = surr_2.time_domain_oscillatory(inc=inc_2, phase=pol_2)
 # Now it's time to apply our newly defined function `frequency_domain_transform`. Use
 # this to transform the osciallory time domain waveform to the frequency domain. We
 # use oscillatory_tilde, frequencies to store the products.
-oscillatory_tilde, frequencies = frequency_domain_transform(oscillatory, times)
+oscillatory_tilde, frequencies = frequency_domain_transform(oscillatory, times, window_type=osc_window_type)
 oscillatory_tilde_2, frequencies_2 = frequency_domain_transform(
-    oscillatory_2, times_2
+    oscillatory_2, times_2, window_type=osc_window_type_2
 )
 
 # GW memory definition
@@ -115,8 +148,9 @@ memory, times = surr.time_domain_memory(inc=inc, phase=pol)
 memory_2, times_2 = surr_2.time_domain_memory(inc=inc_2, phase=pol_2)
 
 # Again, apply our new function to transform the memory into the frequency domain.
-memory_tilde, frequencies = frequency_domain_transform(memory, times)
-memory_tilde_2, frequencies_2 = frequency_domain_transform(memory_2, times_2)
+memory_tilde, frequencies = frequency_domain_transform(memory, times, window_type=mem_window_type)
+memory_tilde_2, frequencies_2 = frequency_domain_transform(memory_2, times_2, window_type=mem_window_type_2)
+
 
 # Plot of the frequency domain waveform.
 

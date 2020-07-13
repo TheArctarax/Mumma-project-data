@@ -176,7 +176,7 @@ def memory_frequency_model(
     cross_tilde = np.zeros(len(f))
     plus_tilde[: len(plus_tilde_new)] = plus_tilde_new[:]
     cross_tilde[: len(cross_tilde_new)] = cross_tilde_new[:]
-    print(len(plus_tilde), len(cross_tilde))
+    print('plus: {} cross: {}'.format(len(plus_tilde), len(cross_tilde)))
     return {"plus": plus_tilde, "cross": cross_tilde}
 
 
@@ -207,7 +207,7 @@ waveform = bilby.gw.waveform_generator.WaveformGenerator(
     duration=duration,
     sampling_frequency=sampling_frequency,
     frequency_domain_source_model=memory_frequency_model,
-    start_time=injection_parameters["geocent_time"] + start_time,
+    start_time=injection_parameters["geocent_time"] - 0.5,
 )
 
 
@@ -218,7 +218,7 @@ ifos = bilby.gw.detector.InterferometerList(["H1", "L1", "V1"])
 ifos.set_strain_data_from_zero_noise(
     sampling_frequency=sampling_frequency,
     duration=duration,
-    start_time=injection_parameters["geocent_time"] + start_time,
+    start_time=injection_parameters["geocent_time"] - 0.5,
 )
 ifos.inject_signal(
     waveform_generator=waveform, parameters=injection_parameters

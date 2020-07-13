@@ -1,6 +1,5 @@
 from __future__ import division, print_function
 import matplotlib
-matplotlib.use("Agg")
 import numpy as np
 import bilby
 import gwmemory
@@ -18,13 +17,15 @@ into LIGO modelled memory.
 
 # Set the parameters of the data segment that we're
 # going to inject the signal into
-duration = 4.
+duration = 2.
 sampling_frequency = 4096
 f_lower = 15.0
+start_time=-0.5
+end_time=0.0
 
 # Specify the output directory and the name of the simulation.
-outdir = "/Users/alvinli/bilby_output"
-label = "test1"
+outdir = "/home/darin/bilby_output"
+label = "test7"
 bilby.core.utils.setup_logger(outdir=outdir, label=label)
 
 
@@ -38,7 +39,7 @@ def frequency_domain_transform(time_domain_strain, times):
   return frequency_domain_strain, frequencies
 
 def memory_time_model(times, q, s1x, s2x, s1y, s2y, s1z, s2z, d, M, psi, inc, geocent_time, memory_constant):
-    surr_times = np.linspace(-0.5, 0.0, 4096*0.5)
+    surr_times = np.linspace(start_time, end_time, sampling_frequency*(end_time-start_time))
     surr = gwmemory.waveforms.surrogate.Surrogate(q=q, spin_1=[s1x, s1y, s1z], spin_2=[s2x, s2y, s2z], total_mass=M, distance=d, times=surr_times)
     oscillatory, surr_times = surr.time_domain_oscillatory(inc=inc, phase=psi)
     memory, surr_times = surr.time_domain_memory(inc=inc, phase=psi)
@@ -47,8 +48,8 @@ def memory_time_model(times, q, s1x, s2x, s1y, s2y, s1z, s2z, d, M, psi, inc, ge
     tidx = np.where(times==geocent_time)[0][0]
     print(tidx)
     i=0
-    plus_new = oscillatory['plus'] + memory['plus']
-    cross_new = oscillatory['cross'] + memory['cross']
+    plus_new = oscillatory['plus'] + memory_constant*memory['plus']
+    cross_new = oscillatory['cross'] + memory_constant*memory['cross']
     plus_new = np.flip(plus_new)
     cross_new = np.flip(cross_new)
     while i<len(plus_new):
@@ -72,7 +73,7 @@ def memory_model(
     # The sub-function waveforms.surrogate.Surrogate generates a surrogate
     # object.
     surr = gwmemory.waveforms.surrogate.Surrogate(
-        q=1,
+        q=q,
         name="nrsur7dq2",
         spin_1=[s1x, s1y, s1z],
         spin_2=[s2x, s2y, s2z],
@@ -106,16 +107,16 @@ def memory_model(
 # parameters, including masses of the two black holes (mass_1, mass_2),
 # spins of both black holes (a, tilt, phi), etc.
 injection_parameters = dict(
-    M=100.0,
+    M=60.0,
     s1x=0.0,
     s2x=0.0,
     s1y=0.0,
     s2y=0.0,
     s1z=0.0,
     s2z=0.0,
-    d=50.0,
+    d=10,
     q=1.,
-    inc=np.pi / 2,
+    inc=np.pi/2,
     psi=0.0,
     memory_constant=1.0,
     ra=0.0,
@@ -134,11 +135,14 @@ waveform = bilby.gw.waveform_generator.WaveformGenerator(
 # (LIGO-Hanford (H1), LIGO-Livingston (L1). These default to their design
 # sensitivity
 ifos = bilby.gw.detector.InterferometerList(["H1", "L1"])
+'''
 ifos.set_strain_data_from_power_spectral_densities(
     sampling_frequency=sampling_frequency,
     duration=duration,
     start_time=injection_parameters["geocent_time"] - 0.5,
 )
+'''
+ifos.set_strain_data_from_zero_noise(sampling_frequency=sampling_frequency, duration=duration, start_time=injection_parameters["geocent_time"] - 0.5)
 ifos.inject_signal(
     waveform_generator=waveform, parameters=injection_parameters
 )
@@ -154,7 +158,7 @@ ifos.inject_signal(
 # distance, which means those are the parameters that will be included in the
 # sampler.  If we do nothing, then the default priors get used.
 priors = injection_parameters.copy()
-priors["memory_constant"] = bilby.core.prior.Uniform(-1, 1, r"$\lambda$")
+priors["memory_constant"] = bilby.core.prior.Uniform(-1, 2, r"$\lambda$")
 
 # Initialise the likelihood by passing in the interferometer data (ifos) and
 # the waveform generator
@@ -167,7 +171,7 @@ result = bilby.run_sampler(
     likelihood=likelihood,
     priors=priors,
     sampler="dynesty",
-    npoints=1000,
+    npoints=500,
     injection_parameters=injection_parameters,
     outdir=outdir,
     label=label,

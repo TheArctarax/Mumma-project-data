@@ -23,8 +23,8 @@ sampling_frequency = 4096
 f_lower = 15.0
 
 # Specify the output directory and the name of the simulation.
-outdir = "/Users/alvinli/bilby_output"
-label = "test_f_domain_d100_M60"
+outdir = "/home/darin/bilby_output"
+label = "test_fd_windowing"
 bilby.core.utils.setup_logger(outdir=outdir, label=label)
 
 

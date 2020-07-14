@@ -9,27 +9,37 @@ np.seterr(divide='ignore', invalid='ignore')
 
 
 # Variable assignments
+sampling_frequency = 4096
 S1 = [0., 0., 0.]
 S2 = [0., 0., 0.]
 inc = np.pi / 2
-pol = 0
-d=600
+pol = 0.0
+d=400
 M=60
-q=1.99
+q=0.5
 
 
 # Sample space definition for the memory's t-axis. Purposely set to begin, end, and have the same number of points as the
 # original waveform so that superposition of the timeseries is possible.
-start_time=-0.51
-end_time=0.02
-times = np.linspace(start_time, end_time, 10001)
+start_time=-0.5
+end_time=0.0
+times = np.linspace(start_time, end_time, sampling_frequency * (end_time-start_time))
 
 
 # GW waveform with memory definition
 # The sub-function waveforms.surrogate.Surrogate generates a surrogate object.
-surr = gwmemory.waveforms.surrogate.Surrogate(q=q, name='nrsur7dq2', spin_1=S1, spin_2=S2, total_mass=M, distance=d, times=times)
-
-
+surr = gwmemory.waveforms.surrogate.Surrogate(q=q, name='nrsur7dq4', spin_1=S1, spin_2=S2, total_mass=M, distance=d, times=times)
+'''
+Got omega_ref = 0.0093 < 0.0161 = omega_0, too small
+Got omega_ref = 0.0093 < 0.0161 = omega_0, too small
+Got omega_ref = 0.0093 < 0.0161 = omega_0, too small
+Got omega_ref = 0.0093 < 0.0161 = omega_0, too small
+Got omega_ref = 0.0155 < 0.0161 = omega_0, too small
+Got omega_ref = 0.0093 < 0.0185 = omega_0, too small
+Got omega_ref = 0.0093 < 0.0167 = omega_0, too small!
+m = 104.21 is lim between these errors and this error:
+cannot convert float infinity to integer
+'''
 # GW waveform only definition
 # A surrogate object has the following attributes: time_domain_memory (a 
 # pycbc.timeseries object that has both the ['plus'] and ['cross'] sub-arrays), 

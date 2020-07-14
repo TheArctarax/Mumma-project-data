@@ -29,7 +29,7 @@ times = np.linspace(start_time, end_time, 10001)
 # The sub-function waveforms.approximant.Approximant generates an Approximant object.
 # You can input whatever waveform approximant that is acceptable by PyCBC in the argument
 # name. Note that I have made a small change to the waveform.approximant.py script. 
-approx = gwmemory.waveforms.approximant.Approximant(q=q, name="IMRPhenomD", spin_1=S1, spin_2=S2, total_mass=M, distance=d, times=times)
+approx = gwmemory.waveforms.approximant.Approximant(q=q, name="NRSur7dq4", spin_1=S1, spin_2=S2, total_mass=M, distance=d, times=times)
 
 
 # GW waveform only definition

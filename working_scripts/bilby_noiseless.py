@@ -24,7 +24,7 @@ f_lower = 15.0
 
 # Specify the output directory and the name of the simulation.
 outdir = "/home/darin/bilby_output"
-label = "test_time_factor"
+label = "test_mid_distance"
 bilby.core.utils.setup_logger(outdir=outdir, label=label)
 
 
@@ -145,7 +145,7 @@ injection_parameters = dict(
     s2y=0.0,
     s1z=0.0,
     s2z=0.0,
-    distance=400,
+    distance=200,
     mass_ratio=1.0,
     inc=np.pi / 2,
     psi=0.0,
@@ -204,7 +204,7 @@ result = bilby.run_sampler(
     sampler="dynesty",
     use_ratio=True,
     plot=True,
-    npoints=100,
+    npoints=1000,
     sample="unif",
     verbose=True,
     injection_parameters=injection_parameters,

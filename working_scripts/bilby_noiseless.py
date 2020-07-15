@@ -24,7 +24,7 @@ f_lower = 15.0
 
 # Specify the output directory and the name of the simulation.
 outdir = "/home/darin/bilby_output"
-label = "test_mid_distance"
+label = "test_mid_distance_new"
 bilby.core.utils.setup_logger(outdir=outdir, label=label)
 
 
@@ -145,7 +145,7 @@ injection_parameters = dict(
     s2y=0.0,
     s1z=0.0,
     s2z=0.0,
-    distance=200,
+    distance=500,
     mass_ratio=1.0,
     inc=np.pi / 2,
     psi=0.0,
@@ -161,7 +161,7 @@ waveform = bilby.gw.waveform_generator.WaveformGenerator(
     duration=duration,
     sampling_frequency=sampling_frequency,
     time_domain_source_model=memory_time_model,
-    start_time=injection_parameters["geocent_time"] - 0.5,
+    start_time=injection_parameters["geocent_time"] - duration/2.0,
 )
 
 
@@ -172,7 +172,7 @@ ifos = bilby.gw.detector.InterferometerList(["H1", "L1", "V1"])
 ifos.set_strain_data_from_zero_noise(
     sampling_frequency=sampling_frequency,
     duration=duration,
-    start_time=injection_parameters["geocent_time"] - 0.5,
+    start_time=injection_parameters["geocent_time"] - duration/2.0,
 )
 ifos.inject_signal(
     waveform_generator=waveform, parameters=injection_parameters
@@ -204,7 +204,7 @@ result = bilby.run_sampler(
     sampler="dynesty",
     use_ratio=True,
     plot=True,
-    npoints=1000,
+    npoints=500,
     sample="unif",
     verbose=True,
     injection_parameters=injection_parameters,

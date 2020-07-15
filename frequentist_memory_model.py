@@ -206,26 +206,24 @@ for memory_constant in sample_lambda:
     likelihood_values.append(likelihood.log_likelihood())
 
 # Plot Bayesian Likelihood
-'''
 result_close = bilby.result.read_in_result(filename='/home/darin/bilby_output/test_mid_distance_result.json')
 result_mid = bilby.result.read_in_result(filename='/home/darin/bilby_output/test_mid_distance_new_result.json')
 result_far = bilby.result.read_in_result(filename='/home/darin/bilby_output/test_far_distance_result.json')
-'''
-'''
+
 xclose = result_close.posterior['memory_constant']
 xmid = result_mid.posterior['memory_constant']
 xfar = result_far.posterior['memory_constant']
 
-yclose = result_close.posterior.log_likelihood.values
-ymid = result_mid.posterior.log_likelihood.values
-yfar = result_far.posterior.log_likelihood.values
+#yclose = result_close.posterior.log_likelihood.values
+yclose=result_close.posterior['log_likelihood']
+#ymid = result_mid.posterior.log_likelihood.values
+#yfar = result_far.posterior.log_likelihood.values
 
-print(xclose)
-'''
-'''
-plot(xclose, np.exp(yclose), color='r', label='100 Mpc')
-plot(xclose, np.exp(yclose), color='b', label='500 Mpc')
-plot(xclose, np.exp(yclose), color='g', label='1000 Mpc')
+print(yclose)
+
+plot(xclose, yclose, color='r', label='100 Mpc')
+#plot(xclose, yclose, color='b', label='500 Mpc')
+#plot(xclose, yclose, color='g', label='1000 Mpc')
 
 xlim(-1, 3)
 xlabel(r"memory constant, $\lambda$")
@@ -238,4 +236,4 @@ grid(False)
 savefig('/home/darin/bilby_output/three_distances.pdf')
 show()
 close()
-'''
+

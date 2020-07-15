@@ -11,9 +11,9 @@ from scipy.signal import get_window
 np.seterr(divide="ignore", invalid="ignore")
 
 """
-When completed, this code will compute the posterior distribution for the
+This code computes the posterior distribution for the
 memory constant. Here, we inject a waveform + memory model using GWMemory
-into LIGO modelled memory.
+into noiseless data.
 """
 
 
@@ -25,7 +25,7 @@ f_lower = 15.0
 
 # Specify the output directory and the name of the simulation.
 outdir = "/Users/alvinli/bilby_output"
-label = "test_f_domain_d400_M60"
+label = "test_td_M60_d5"
 bilby.core.utils.setup_logger(outdir=outdir, label=label)
 
 
@@ -33,107 +33,71 @@ bilby.core.utils.setup_logger(outdir=outdir, label=label)
 np.random.seed(88170235)
 
 
-def frequency_domain_transform(time_domain_strain, times, window_type=None):
-    sampling_frequency = 1 / (times[1] - times[0])
-    frequencies = None
-
+def time_domain_window(time_domain_strain, window_type=None):
     if window_type != None:
         window = get_window(window_type, time_domain_strain.size)
         time_domain_strain = time_domain_strain * window
 
-    frequency_domain_strain, frequencies = utils.nfft(
-        time_domain_strain, sampling_frequency
-    )
-    return frequency_domain_strain, frequencies
+    return time_domain_strain
 
 
 def memory_time_model(
     times,
-    q,
+    mass_ratio,
     s1x,
     s2x,
     s1y,
     s2y,
     s1z,
     s2z,
-    d,
-    M,
-    psi,
+    distance,
+    total_mass,
+    phase,
     inc,
-    geocent_time,
     memory_constant,
 ):
-    start_time = -0.5
-    end_time = 0.0
+    # first, we need a linear sample space
+    '''
+    end_time can only be up to a certain time after merger, which is set in
+    geometric units. Conversion from geometric to physical units is given by:
+    phys_time = geo_time * (total_mass * m_sun_to_kg)/(c**3/G).
+    '''
+    GG = 6.674098281543097e-11
+    cc = 2.99792458e8
+    m_sun_to_kg = 1.98847e+30
+    time_lim = 100.00000001920307 # from error message
 
+    start_time = -0.5
+    end_time = time_lim * (total_mass * m_sun_to_kg)/(cc**3/GG) - 0.01
     surr_times = np.linspace(
         start_time, end_time, sampling_frequency * (end_time - start_time)
     )
+
+    # Now, to generate an oscillating and secular waveform...
     surr = gwmemory.waveforms.surrogate.Surrogate(
-        q=q,
+        q=mass_ratio,
         spin_1=[s1x, s1y, s1z],
         spin_2=[s2x, s2y, s2z],
-        total_mass=M,
-        distance=d,
+        total_mass=total_mass,
+        distance=distance,
         times=surr_times,
     )
-    oscillatory, surr_times = surr.time_domain_oscillatory(inc=inc, phase=psi)
-    memory, surr_times = surr.time_domain_memory(inc=inc, phase=psi)
-    plus = np.zeros(len(times))
-    cross = np.zeros(len(times))
-    tidx = np.where(times == geocent_time)[0][0]
-    print(tidx)
-    i = 0
+    oscillatory, surr_times = surr.time_domain_oscillatory(inc=inc, phase=phase)
+    memory, surr_times = surr.time_domain_memory(inc=inc, phase=phase)
+
+    # ...and add them
     plus_new = oscillatory["plus"] + memory_constant * memory["plus"]
     cross_new = oscillatory["cross"] + memory_constant * memory["cross"]
-    plus_new = np.flip(plus_new)
-    cross_new = np.flip(cross_new)
-    while i < len(plus_new):
-        plus[tidx - i] = plus_new[i]
-        cross[tidx - i] = cross_new[i]
-        i = i + 1
-    return {"plus": plus, "cross": cross}
 
-
-# Model with memory
-def memory_frequency_model(
-    f, M, q, s1x, s2x, s1y, s2y, s1z, s2z, d, inc, psi, memory_constant
-):
-    # Sample space definition for the memory's t-axis. Purposely set to begin,
-    # end, and have the same number of points as the original waveform so that
-    # superposition of the timeseries is possible.
-    start_time = -0.5
-    end_time = 0.0
-    times = np.linspace(
-        start_time, end_time, sampling_frequency * (end_time - start_time)
-    )
-
-    # GW waveform with memory definition
-    # The sub-function waveforms.surrogate.Surrogate generates a surrogate
-    # object.
-    surr = gwmemory.waveforms.surrogate.Surrogate(
-        q=q,
-        name="nrsur7dq2",
-        spin_1=[s1x, s1y, s1z],
-        spin_2=[s2x, s2y, s2z],
-        total_mass=M,
-        distance=d,
-        times=times,
-    )
-
-    # GW waveform only definition
-    # A surrogate object has the following attributes: time_domain_memory (a
-    # pycbc.timeseries object that has both the ['plus'] and ['cross']
-    # sub-arrays), and time_domain_memory which also has ['plus'] and
-    # ['cross']). Calling these attributes returns both the pycbc timeseries
-    # and the sampling time arrays (which you store it as times here).
-    oscillatory, times = surr.time_domain_oscillatory(inc=inc, phase=psi)
-
-    # GW memory definition
-    memory, times = surr.time_domain_memory(inc=inc, phase=psi)
-
+    # Next, we want to place them in our sample space
+    plus = np.zeros(len(times))
+    cross = np.zeros(len(times))
+    plus[-len(surr_times):] = plus_new
+    cross[-len(surr_times):] = cross_new
+    
+    # Finally, we need to window before applying an fft
     """
-    Window Types provided by scipy.signal.windows.get_window
+    Window types provided by scipy.signal.windows.get_window
     [https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.windows.get_
     window.html#scipy.signal.windows.get_window]
     ------------------------------------------------------------------------------
@@ -164,21 +128,10 @@ def memory_frequency_model(
     window_type_plus = ("kaiser", 0.1)
     window_type_cross = ("kaiser", 0.1)
 
-    # waveform
-    plus = oscillatory["plus"][:] + memory_constant * memory["plus"][:]
-    cross = oscillatory["cross"][:] + memory_constant * memory["cross"][:]
-    plus_tilde_new, frequencies = frequency_domain_transform(
-        plus, times, window_type=window_type_plus
-    )
-    cross_tilde_new, frequencies = frequency_domain_transform(
-        cross, times, window_type=window_type_cross
-    )
-    plus_tilde = np.zeros(len(f))
-    cross_tilde = np.zeros(len(f))
-    plus_tilde[: len(plus_tilde_new)] = plus_tilde_new[:]
-    cross_tilde[: len(cross_tilde_new)] = cross_tilde_new[:]
-    print(len(plus_tilde), len(cross_tilde))
-    return {"plus": plus_tilde, "cross": cross_tilde}
+    plus = time_domain_window(plus, window_type=window_type_plus)
+    cross = time_domain_window(cross, window_type=window_type_cross)
+    print(len(plus))
+    return {"plus": plus, "cross": cross}
 
 
 # We are going to inject a binary black hole waveform.  We first establish a
@@ -186,28 +139,29 @@ def memory_frequency_model(
 # parameters, including masses of the two black holes (mass_1, mass_2),
 # spins of both black holes (a, tilt, phi), etc.
 injection_parameters = dict(
-    M=60.0,
+    total_mass=60.0,
     s1x=0.0,
     s2x=0.0,
     s1y=0.0,
     s2y=0.0,
     s1z=0.0,
     s2z=0.0,
-    d=400,
-    q=1.0,
+    distance=5,
+    mass_ratio=1.0,
     inc=np.pi / 2,
     psi=0.0,
+    phase=0.0,
     memory_constant=1.0,
     ra=0.0,
     dec=0.0,
-    geocent_time=0.0,
+    geocent_time=0.0
 )
 
 # Create the waveform_generator using a LAL BinaryBlackHole source function
 waveform = bilby.gw.waveform_generator.WaveformGenerator(
     duration=duration,
     sampling_frequency=sampling_frequency,
-    frequency_domain_source_model=memory_frequency_model,
+    time_domain_source_model=memory_time_model,
     start_time=injection_parameters["geocent_time"] - 0.5,
 )
 
@@ -251,8 +205,8 @@ result = bilby.run_sampler(
     sampler="dynesty",
     use_ratio=True,
     plot=True,
-    npoints=100,
-    sample="rwalk",
+    npoints=10,
+    sample="unif",
     verbose=True,
     injection_parameters=injection_parameters,
     outdir=outdir,

@@ -1,6 +1,5 @@
 from __future__ import division, print_function
 import matplotlib
-matplotlib.use("agg")
 import numpy as np
 import bilby
 import matplotlib.pyplot as plt
@@ -9,7 +8,11 @@ from gwmemory import utils as utils
 import itertools
 import scipy.optimize as opt
 from scipy.signal import get_window
+from matplotlib.pyplot import rcParams
 
+
+rcParams["font.family"] = "Times New Roman"
+rcParams["axes.unicode_minus"] = False
 #np.seterr(divide="ignore", invalid="ignore")
 
 
@@ -201,7 +204,7 @@ likelihood.parameters.update(injection_parameters)
 
 
 # iv.
-memory_constant = np.arange(-1., 3., 0.5)
+memory_constant = np.arange(-1., 3., 4.0/200.0)
 logL = []
 for Lambda in memory_constant:
    likelihood.parameters["memory_constant"] = Lambda
@@ -217,29 +220,30 @@ max_lambda = opt.fminbound(lambda Lambda: -logL_function(Lambda), -1, 3)
 print(max_lambda, logL_function(max_lambda))
 
 #fig = figure(figsize=(6, 6))
-plt.plot(memory_constant, logL, color="r")
-plt.plot(max_lambda, logL_function(max_lambda), 'bo', label="Max log L")
+plt.plot(memory_constant, np.exp(logL), color="gwpy:ligo-livingston")
+plt.plot(max_lambda, np.exp(logL_function(max_lambda)), 'ro')
 plt.xlim(-1, 3)
-plt.xlabel(r'$lambda$')
-plt.ylabel(r'log Likelihood')
-plt.legend()
+plt.xlabel(r'$\lambda$')
+plt.ylabel(r'Likelihood')
 #rc("xtick", labelsize=12)
 #rc("ytick", labelsize=12)
 #rc("axes", labelsize=14)
-plt.grid(True)
-plt.savefig('likelihood_v_lambda.pdf')
+frame = plt.gca()
+frame.axes.get_yaxis().set_ticks([])
+plt.grid(False)
+plt.savefig('/home/darin/frequentist_output/likelihood_v_lambda.pdf')
 
 #tight_layout()
-#show()
+plt.show()
 plt.close()
 
 # vi.
 max_lambda = opt.fminbound(lambda Lambda: -logL_function(Lambda), -1, 3)
 
 
-peak = likelihood.np().argmax()
-memory_constant = likelihood.sample_lambda[peak]
-two_sigma = np.std(likelihood) * 2
+#peak = likelihood.np().argmax()
+#memory_constant = likelihood.sample_lambda[peak]
+#two_sigma = np.std(likelihood) * 2
 
-print(r'$\lambda$ = {} $\pm$ {}'.format(memory_constant, two_sigma))
+#print(r'$\lambda$ = {} $\pm$ {}'.format(memory_constant, two_sigma))
 

@@ -8,6 +8,9 @@ import itertools
 from scipy.signal import get_window
 from matplotlib.pyplot import rcParams
 import pandas as pd
+from scipy.stats import norm
+import scipy.optimize as opt
+import gwpy
 
 rcParams["font.family"] = "Times New Roman"
 rcParams["axes.unicode_minus"] = False
@@ -144,7 +147,7 @@ injection_parameters = dict(
     s2y=0.0,
     s1z=0.0,
     s2z=0.0,
-    distance=400,
+    distance=100,
     mass_ratio=1.0,
     inc=np.pi / 2,
     psi=0.0,
@@ -198,7 +201,7 @@ likelihood = bilby.gw.GravitationalWaveTransient(
 likelihood.parameters.update(injection_parameters)
 
 # Plot Frequentist Likelihood
-sample_lambda = np.linspace(-1, 3, 11)
+sample_lambda = np.linspace(-1, 3, 100)
 likelihood_values = []
 
 for memory_constant in sample_lambda:
@@ -214,26 +217,50 @@ xclose = result_close.posterior['memory_constant']
 xmid = result_mid.posterior['memory_constant']
 xfar = result_far.posterior['memory_constant']
 
-#yclose = result_close.posterior.log_likelihood.values
 yclose=result_close.posterior['log_likelihood']
-#ymid = result_mid.posterior.log_likelihood.values
-#yfar = result_far.posterior.log_likelihood.values
+ymid = result_mid.posterior['log_likelihood']
+yfar = result_far.posterior['log_likelihood']
 
-print(yclose)
+xclose, yclose = zip(*sorted(zip(xclose, yclose), key=lambda xclose: xclose[0]))
+xmid, ymid = zip(*sorted(zip(xmid, ymid), key=lambda xmid: xmid[0]))
+xfar, yfar = zip(*sorted(zip(xfar, yfar), key=lambda xfar: xfar[0]))
 
-plot(xclose, yclose, color='r', label='100 Mpc')
-#plot(xclose, yclose, color='b', label='500 Mpc')
-#plot(xclose, yclose, color='g', label='1000 Mpc')
+xclose = np.asarray(xclose)
+xmid = np.asarray(xmid)
+xfar = np.asarray(xfar)
 
+yclose = np.asarray(yclose)
+ymid = np.asarray(ymid)
+yfar = np.asarray(yfar)
+
+#def exp_normalize(x):
+#    b = x.max()
+#    y = np.exp(x-b)
+#   
+#    return y/y.sum()
+
+#def normalize (x):
+#    return x/x.sum()
+
+#yclose = norm.pdf(exp_normalize(yclose), np.mean(yclose), np.std(yclose))
+#ymid = norm.pdf(exp_normalize(ymid), np.mean(ymid), np.std(ymid))
+#yfar = norm.pdf(exp_normalize(yfar), np.mean(yfar), np.std(yfar))
+
+#plot(xclose, yclose, color='r', label='100 Mpc')
+#plot(xmid, ymid, color='b', label='500 Mpc')
+#plot(xfar, yfar, color='g', label='1000 Mpc')
+max_lambda = opt.fminbound(lambda Lambda: -likelihood_values(Lambda), -1, 3)
+plot(sample_lambda, np.exp(likelihood_values), color='gwpy:ligo-livingston')
+plot(max_lambda, np.exp(likelihood_values(max_lambda)), 'ro')
 xlim(-1, 3)
-xlabel(r"memory constant, $\lambda$")
+xlabel(r"$\lambda$")
 ylabel(r'Likelihood')
-legend(loc="upper right", prop={"size": 10})
+frame = gca()
+frame.axes.get_yaxis().set_ticks([])
 grid(False)
 
-# plot(sample_lambda, np.exp(likelihood_values))
 
-savefig('/home/darin/bilby_output/three_distances.pdf')
+savefig('/home/darin/frequentist_output/use_two_methods.pdf')
 show()
 close()
 

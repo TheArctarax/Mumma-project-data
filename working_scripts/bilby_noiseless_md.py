@@ -23,8 +23,8 @@ sampling_frequency = 4096
 f_lower = 15.0
 
 # Specify the output directory and the name of the simulation.
-outdir = "/home/darin/bilby_output_noiseless_1D"
-label = "mid_spin"
+outdir = "/home/darin/bilby_output_noiseless_md"
+label = "vary_mass_ratio_far_distance"
 bilby.core.utils.setup_logger(outdir=outdir, label=label)
 
 
@@ -188,10 +188,10 @@ injection_parameters = dict(
     s2x=0.0,
     s1y=0.0,
     s2y=0.0,
-    s1z=0.4,
-    s2z=0.4,
-    distance=100,
-    mass_ratio=1.0,
+    s1z=0.0,
+    s2z=0.0,
+    distance=1000,
+    mass_ratio=1.5,
     inc=np.pi / 2,
     psi=0.0,
     phase=0.0,
@@ -252,7 +252,7 @@ ifos.inject_signal(
 # sampler.  If we do nothing, then the default priors get used.
 priors = injection_parameters.copy()
 priors["memory_constant"] = bilby.core.prior.Uniform(-3, 5, r"$\lambda$")
-priors["inc"] = bilby.core.prior.Uniform(0, np.pi, r"$i$")
+priors["mass_ratio"] = bilby.core.prior.Uniform(1.0, 1.99, "q")
 
 # Initialise the likelihood by passing in the interferometer data (ifos) and
 # the waveform generator
@@ -267,8 +267,8 @@ result = bilby.run_sampler(
     sampler="dynesty",
     use_ratio=True,
     plot=True,
-    npoints=100,
-    sample="rwalk",
+    npoints=200,
+    sample="unif",
     verbose=True,
     injection_parameters=injection_parameters,
     outdir=outdir,

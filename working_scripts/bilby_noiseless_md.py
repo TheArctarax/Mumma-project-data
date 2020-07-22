@@ -24,7 +24,7 @@ f_lower = 15.0
 
 # Specify the output directory and the name of the simulation.
 outdir = "/home/darin/bilby_output_noiseless_md"
-label = "vary_mass_ratio_far_distance"
+label = "vary_pol_and_phase"
 bilby.core.utils.setup_logger(outdir=outdir, label=label)
 
 
@@ -125,7 +125,7 @@ def memory_time_model(
         times=surr_times,
     )
     oscillatory, surr_times = surr.time_domain_oscillatory(
-        inc=inc, phase=phase
+        modes=(2, 2), inc=inc, phase=phase
     )
     memory, surr_times = surr.time_domain_memory(inc=inc, phase=phase)
 
@@ -190,8 +190,8 @@ injection_parameters = dict(
     s2y=0.0,
     s1z=0.0,
     s2z=0.0,
-    distance=1000,
-    mass_ratio=1.5,
+    distance=100,
+    mass_ratio=1.0,
     inc=np.pi / 2,
     psi=0.0,
     phase=0.0,
@@ -252,7 +252,8 @@ ifos.inject_signal(
 # sampler.  If we do nothing, then the default priors get used.
 priors = injection_parameters.copy()
 priors["memory_constant"] = bilby.core.prior.Uniform(-3, 5, r"$\lambda$")
-priors["mass_ratio"] = bilby.core.prior.Uniform(1.0, 1.99, "q")
+priors["psi"] = bilby.core.prior.Uniform(0.0, 2.0 * np.pi, r"\psi")
+priors["phase"] = bilby.core.prior.Uniform(0.0, 2.0 * np.pi, r"\phi")
 
 # Initialise the likelihood by passing in the interferometer data (ifos) and
 # the waveform generator

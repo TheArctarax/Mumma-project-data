@@ -210,7 +210,6 @@ ifos.inject_signal(
 )
 
 priors = injection_parameters.copy()
-# priors["memory_constant"] = bilby.core.prior.Uniform(-1, 3, r"$\lambda$")
 
 likelihood = bilby.gw.GravitationalWaveTransient(
     interferometers=ifos, waveform_generator=waveform
@@ -220,33 +219,28 @@ likelihood.parameters.update(injection_parameters)
 
 
 # iv.
-memory_constant = np.arange(-1.0, 3.0, 4.0 / 11.0)
-distance = np.arange(80.0, 120.0, 40.0 / 11.0)
-logL = []
-logL2 = []
-for Lambda in memory_constant:
-    likelihood.parameters["memory_constant"] = Lambda
-    logL.append(likelihood.log_likelihood())
-    print("Now working on lambda = %s" % Lambda)
-
-for dee in distance:
-    likelihood.parameters["distance"] = dee
-    logL2.append(likelihood.log_likelihood())
-    print("Now working on distance = %s" % dee)
-
-
-def logL_function(parameter):
-    if parameter == "Lambda":
-        likelihood.parameters["memory_constant"] = parameter
-    elif parameter == "dee":
-        likelihood.parameters["distance"] = parameter
-    return likelihood.log_likelihood()
-
 
 # v.
-# plotting pdf for memory constant
-max_lambda = opt.fminbound(lambda Lambda: -logL_function(Lambda), -1, 3)
+memory = np.arange(-1, 3, 4.0/11.0)
+dee = np.arange(80, 120, 40./110.0)
 
+Memory, Dee = np.meshgrid(memory, dee)
+lnL = likelihood.log_likelihood(Memory, Dee)
+plt.contourf(Memory, Dee, np.exp(lnL))
+
+plt.show()
+plt.close()
+
+'''
+grid = bilby.core.grid.Grid(likelihood=likelihood, priors=priors)
+plt.plot(grid._get_sample_points((11,11)), grid.ln_likelihood())
+
+plt.show()
+plt.close()
+'''
+
+'''
+# plotting pdf for memory constant
 plt.plot(memory_constant, np.exp(logL), color="gwpy:ligo-livingston")
 plt.plot(max_lambda, np.exp(logL_function(max_lambda)), "ro")
 plt.xlim(-1, 3)
@@ -262,27 +256,9 @@ plt.savefig("/home/darin/frequentist_output/likelihood_v_lambda_2d.pdf")
 
 plt.show()
 plt.close()
+'''
 
-# plotting pdf for distance
-max_dee = opt.fminbound(lambda dee: -logL_function(dee), 80, 120)
-
-plt.plot(distance, np.exp(logL2), color="gwpy:ligo-livingston")
-plt.plot(max_dee, np.exp(logL_function(max_dee)), "ro")
-plt.xlim(80, 120)
-plt.xlabel(r"$\mathregular{d_L}$")
-plt.ylabel(r"Likelihood")
-plt.rc("xtick", labelsize=12)
-plt.rc("ytick", labelsize=12)
-plt.rc("axes", labelsize=14)
-frame = plt.gca()
-frame.axes.get_yaxis().set_ticks([])
-plt.grid(False)
-plt.savefig("/home/darin/frequentist_output/likelihood_v_distance_2d.pdf")
-
-plt.show()
-plt.close()
-
-
+'''
 # vi.
 f = lambda i: logL[i]
 peak = max(range(len(logL)), key=f)
@@ -296,3 +272,4 @@ two_sigma2 = np.std(logL2) * 2
 
 print("lambda = {} +- {}".format(memory_constant, two_sigma))
 print("distance = {} +- {}".format(distance, two_sigma2))
+'''

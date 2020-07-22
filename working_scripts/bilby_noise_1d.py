@@ -23,7 +23,7 @@ f_lower = 15.0
 
 # Specify the output directory and the name of the simulation.
 outdir = "/home/darin/bilby_output_noise_1D"
-label = "closer_distance_larger_n_decreased_space"
+label = "closest_distance"
 bilby.core.utils.setup_logger(outdir=outdir, label=label)
 
 
@@ -189,7 +189,7 @@ injection_parameters = dict(
     s2y=0.0,
     s1z=0.0,
     s2z=0.0,
-    distance=10,
+    distance=5,
     mass_ratio=1.0,
     inc=np.pi / 2,
     psi=0.0,
@@ -269,8 +269,8 @@ result = bilby.run_sampler(
     sampler="dynesty",
     use_ratio=True,
     plot=True,
-    npoints=500,
-    sample="unif",
+    npoints=200,
+    sample="rwalk",
     verbose=True,
     injection_parameters=injection_parameters,
     outdir=outdir,

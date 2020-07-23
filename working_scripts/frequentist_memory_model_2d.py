@@ -219,25 +219,41 @@ likelihood.parameters.update(injection_parameters)
 
 
 # iv.
+def lnL_function(parameter):
+    likelihood.parameters['memory_constant'] = parameter[0]
+    likelihood.parameters['distance'] = parameter[1]
+    return likelihood.log_likelihood()
+
 
 # v.
+'''
 memory = np.arange(-1, 3, 4.0/11.0)
 dee = np.arange(80, 120, 40./110.0)
 
 Memory, Dee = np.meshgrid(memory, dee)
-lnL = likelihood.log_likelihood(Memory, Dee)
+
+lnL = []
+i = 0
+while i < len(Dee):
+    j = 0
+    while j < len(Dee[i]):
+        lnL.append(lnL_function([Memory[i][j], Dee[i][j]]))
+        j = j + 1
+    i = i + 1
+
 plt.contourf(Memory, Dee, np.exp(lnL))
 
 plt.show()
 plt.close()
-
 '''
+
+
 grid = bilby.core.grid.Grid(likelihood=likelihood, priors=priors)
-plt.plot(grid._get_sample_points((11,11)), grid.ln_likelihood())
+#plt.plot(grid._get_sample_points((11,11)), grid.ln_likelihood())
 
-plt.show()
-plt.close()
-'''
+#plt.show()
+#plt.close()
+
 
 '''
 # plotting pdf for memory constant

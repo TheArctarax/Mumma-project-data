@@ -1,5 +1,6 @@
 from __future__ import division, print_function
 import matplotlib
+matplotlib.use("Agg")
 import numpy as np
 import bilby
 import matplotlib.pyplot as plt
@@ -210,6 +211,9 @@ ifos.inject_signal(
 )
 
 priors = injection_parameters.copy()
+#priors['memory_constant'] = bilby.core.prior.Uniform(-1, 3, 'lambda')
+#priors['distance'] = bilby.core.prior.Uniform(80, 120, 'd')
+
 
 likelihood = bilby.gw.GravitationalWaveTransient(
     interferometers=ifos, waveform_generator=waveform
@@ -226,9 +230,9 @@ def lnL_function(parameter):
 
 
 # v.
-'''
-memory = np.arange(-1, 3, 4.0/11.0)
-dee = np.arange(80, 120, 40./110.0)
+
+memory = np.arange(-1, 3, 1)
+dee = np.arange(80, 120, 10)
 
 Memory, Dee = np.meshgrid(memory, dee)
 
@@ -236,19 +240,25 @@ lnL = []
 i = 0
 while i < len(Dee):
     j = 0
+    row = []
+    print("Now working on %s row." %(i+1))
     while j < len(Dee[i]):
-        lnL.append(lnL_function([Memory[i][j], Dee[i][j]]))
+        row.append(lnL_function([Memory[i][j], Dee[i][j]]))
         j = j + 1
+    lnL.append(row)
+    print("Completed %s row." %(i+1))
     i = i + 1
 
-plt.contourf(Memory, Dee, np.exp(lnL))
+print(lnL)
+plt.contourf(Memory, Dee, lnL)
 
 plt.show()
+plt.savefig("Trial_2d.pdf")
 plt.close()
-'''
 
 
-grid = bilby.core.grid.Grid(likelihood=likelihood, priors=priors)
+
+#grid = bilby.core.grid.Grid(likelihood=likelihood, priors=priors)
 #plt.plot(grid._get_sample_points((11,11)), grid.ln_likelihood())
 
 #plt.show()

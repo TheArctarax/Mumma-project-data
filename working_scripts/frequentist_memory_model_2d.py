@@ -1,8 +1,8 @@
 from __future__ import division, print_function
 import matplotlib
-matplotlib.use("Agg")
 import numpy as np
 import bilby
+import matplotlib as mpl
 import matplotlib.pyplot as plt
 import gwmemory
 from gwmemory import utils as utils
@@ -166,7 +166,7 @@ injection_parameters = dict(
     s2y=0.0,
     s1z=0.0,
     s2z=0.0,
-    distance=200,
+    distance=100,
     mass_ratio=1.0,
     inc=np.pi / 2,
     psi=0.0,
@@ -231,8 +231,8 @@ def lnL_function(parameter):
 
 # v.
 
-memory = np.arange(-1, 3, 1)
-dee = np.arange(80, 120, 10)
+memory = np.arange(-3, 5, 8.0/15.0)
+dee = np.arange(80, 120, 40.0/40.0)
 
 Memory, Dee = np.meshgrid(memory, dee)
 
@@ -250,10 +250,25 @@ while i < len(Dee):
     i = i + 1
 
 print(lnL)
+lnL = np.array(lnL)
+np.savetxt('Memory_density_1.txt', Memory, delimiter=',')
+np.savetxt('Distance_density_1.txt', Dee, delimiter=',')
+np.savetxt('lnL_1.txt', lnL, delimiter=',')
+
+#norm = mpl.colors.Normalize(vmin=-1000, vmax=0)
 plt.contourf(Memory, Dee, lnL)
+plt.plot(1.0, 100, "ro")
+plt.colorbar()
+#plt.xlim(-3, 5)
+#plt.ylim(80, 120)
+plt.rc("xtick", labelsize=12)
+plt.rc("ytick", labelsize=12)
+plt.rc("axes", labelsize=14)
+plt.grid(False)
+
+plt.savefig("/home/darin/frequentist_output/Trial_2d.pdf")
 
 plt.show()
-plt.savefig("Trial_2d.pdf")
 plt.close()
 
 

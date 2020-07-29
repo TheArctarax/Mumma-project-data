@@ -23,7 +23,7 @@ sampling_frequency = 4096
 f_lower = 15.0
 
 # Specify the output directory and the name of the simulation.
-outdir = "/home/darin/bilby_output_noiseless_md"
+outdir = "/home/darin.mumma/public_html"
 label = "pol_and_phase_HM_mid_distance"
 bilby.core.utils.setup_logger(outdir=outdir, label=label)
 
@@ -277,6 +277,7 @@ result = bilby.run_sampler(
     injection_parameters=injection_parameters,
     outdir=outdir,
     label=label,
+    npool=6,
 )
 
 # Make a corner plot.

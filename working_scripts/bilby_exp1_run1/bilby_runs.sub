@@ -14,5 +14,5 @@ transfer_input_files = bilby_noiseless_md_exp1_run1.py
 executable = /home/darin.mumma/bin/python
 arguments = bilby_noiseless_md_exp1_run1.py
 want_graceful_removal = True
-request_cpus = 3
+request_cpus = 6
 queue 1

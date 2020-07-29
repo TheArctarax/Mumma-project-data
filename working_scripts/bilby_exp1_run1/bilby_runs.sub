@@ -1,0 +1,18 @@
+accounting_group_user = darin.mumma
+accounting_group = ligo.sim.03.cbc.pe.lalinferencerapid
+universe = vanilla
+getenv = true
+output = /home/darin.mumma/Mumma-project-data/working_scripts/bilby_exp1_run1/output
+error = /home/darin.mumma/Mumma-project-data/working_scripts/bilby_exp1_run1/error
+log = /home/darin.mumma/Mumma-project-data/working_scripts/bilby_exp1_run1/log
+notification = Never
+should_transfer_files = YES
+when_to_transfer_output = ON_EXIT
+request_disk = 3GB
+request_memory = 5GB
+transfer_input_files = bilby_noiseless_md_exp1_run1.py
+executable = /home/darin.mumma/bin/python
+arguments = bilby_noiseless_md_exp1_run1.py
+want_graceful_removal = True
+request_cpus = 3
+queue 1

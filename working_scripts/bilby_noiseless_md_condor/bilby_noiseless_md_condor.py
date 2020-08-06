@@ -6,6 +6,8 @@ import gwmemory
 from gwmemory import utils as utils
 import itertools
 from scipy.signal import get_window
+import argparse
+import pandas as pd
 
 np.seterr(divide="ignore", invalid="ignore")
 
@@ -15,6 +17,107 @@ space which includes the memory constant. Here, we use GWMemory to inject a
 waveform + memory model into NOISELESS data.
 """
 
+def parse_command_line():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--outdir', help='output directory')
+    parser.add_argument('--label', help='file name without extension')
+    parser.add_argument('--m',
+                        '--total_mass',
+                        help='total mass of CBC source',
+                        action='store_true',
+                        default=60.,
+    )
+    parser.add_argument('--s1x',
+                        help='x-projected spin of first binary component',
+                        action='store_true',
+                        default=0.,
+    )
+    parser.add_argument('--s2x',
+                        help='x-projected spin of second binary component',
+                        action='store_true',
+                        default=0.,
+    )
+    parser.add_argument('--s1y',
+                        help='y-projected spin of first binary component',
+                        action='store_true',
+                        default=0.,
+    )
+    parser.add_argument('--s2y',
+                        help='y-projected spin of second binary component',
+                        action='store_true',
+                        default=0.,
+    )
+    parser.add_argument('--s1z',
+                        help='z-projected spin of first binary component',
+                        action='store_true',
+                        default=0.,
+    )
+    parser.add_argument('--s2z',
+                        help='z-projected spin of second binary component',
+                        action='store_true',
+                        default=0.,
+    )
+    parser.add_argument('--d',
+                        '--distance',
+                        help='luminosity distance to CBC source',
+                        action='store_true',
+                        default=100.,
+    )
+    parser.add_argument('--q',
+                        '--mass_ratio',
+                        help='mass ratio (m1/m2) of CBC source',
+                        action='store_true',
+                        default=1.5,
+    )
+    parser.add_argument('--i',
+                        '--inclination',
+                        help='inclination of CBC source (0 = face-on, np.pi/2 = edge-on)',
+                        action='store_true',
+                        default=np.pi / 2.,
+    )
+    parser.add_argument('--psi',
+                        '--polarization_angle',
+                        help='gravitational wave polarization angle (0 <= psi <= np.pi)',
+                        action='store_true',
+                        default=0.,
+    )
+    parser.add_argument('--phase',
+                        help='gravitational wave phase (0 <= phase <= 2*np.pi)',
+                        action='store_true',
+                        default=0.,
+    )
+    parser.add_argument('--mc',
+                        '--memory_constant',
+                        help='scaling factor for the gw memory term',
+                        action='store_true',
+                        default=1.,
+    )
+    parser.add_argument('--ra',
+                        help='right ascension of CBC source',
+                        action='store_true',
+                        default=0.,
+    )
+    parser.add_argument('--dec',
+                        help='declination of CBC source',
+                        action='store_true',
+                        default=0.,
+    )
+    parser.add_argument('--t',
+                        '--geocent_time',
+                        help='time of merger (max signal amplitude); usually 0',
+                        action='store_true',
+                        default=0.,
+    )
+
+    options = parser.parse_args()
+    
+    if (options.outdir == None):
+        raise FileNotFoundError('You forgot to specify the output directory')
+
+    return options
+
+options = parse_command_line()
+
 
 # Set the parameters of the data segment that we're
 # going to inject the signal into
@@ -23,8 +126,8 @@ sampling_frequency = 4096
 f_lower = 15.0
 
 # Specify the output directory and the name of the simulation.
-outdir = "/home/darin.mumma/public_html"
-label = "pol_and_phase_HM_mid_distance"
+outdir = options.outdir
+label = options.label
 bilby.core.utils.setup_logger(outdir=outdir, label=label)
 
 
@@ -123,7 +226,7 @@ def memory_time_model(
         total_mass=total_mass,
         distance=distance,
         times=surr_times,
-       #  modes=[(2,2)],
+        modes=[(2,2)],
     )
     oscillatory, surr_times = surr.time_domain_oscillatory(
         inc=inc, phase=phase
@@ -184,22 +287,22 @@ def memory_time_model(
 # parameters, including masses of the two black holes (mass_1, mass_2),
 # spins of both black holes (a, tilt, phi), etc.
 injection_parameters = dict(
-    total_mass=60.0,
-    s1x=0.0,
-    s2x=0.0,
-    s1y=0.0,
-    s2y=0.0,
-    s1z=0.0,
-    s2z=0.0,
-    distance=500,
-    mass_ratio=1.5,
-    inc=np.pi / 2,
-    psi=0.0,
-    phase=0.0,
-    memory_constant=1.0,
-    ra=0.0,
-    dec=0.0,
-    geocent_time=0.0,
+    total_mass=float(options.m),
+    s1x=float(options.s1x),
+    s2x=float(options.s2x),
+    s1y=float(options.s1y),
+    s2y=float(options.s2y),
+    s1z=float(options.s1z),
+    s2z=float(options.s2z),
+    distance=float(options.d),
+    mass_ratio=float(options.q),
+    inc=float(options.i),
+    psi=float(options.psi),
+    phase=float(options.phase),
+    memory_constant=float(options.mc),
+    ra=float(options.ra),
+    dec=float(options.dec),
+    geocent_time=float(options.t),
 )
 
 
@@ -278,6 +381,7 @@ result = bilby.run_sampler(
     outdir=outdir,
     label=label,
     npool=6,
+    exit_code=77
 )
 
 # Make a corner plot.

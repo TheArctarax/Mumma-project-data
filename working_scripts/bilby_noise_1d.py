@@ -22,7 +22,7 @@ sampling_frequency = 4096
 f_lower = 15.0
 
 # Specify the output directory and the name of the simulation.
-outdir = "/home/darin/bilby_output_noise_1D"
+outdir = "/home/darin.mumma/public_html/bilby_noise_1d"
 label = "closest_distance"
 bilby.core.utils.setup_logger(outdir=outdir, label=label)
 

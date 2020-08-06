@@ -7,7 +7,6 @@ from gwmemory import utils as utils
 import itertools
 from scipy.signal import get_window
 import argparse
-import pandas as pd
 
 np.seterr(divide="ignore", invalid="ignore")
 
@@ -147,16 +146,13 @@ def time_domain_window(time_domain_strain, window_type=None):
 def get_t_0_t_f(
     mass_ratio,
     s1x,
-    s2x,
     s1y,
-    s2y,
     s1z,
+    s2x,
+    s2y,
     s2z,
     distance,
     total_mass,
-    phase,
-    inc,
-    memory_constant,
 ):
 
     start_time = -0.5  # arbitrarily chosen
@@ -186,56 +182,22 @@ def get_t_0_t_f(
         LMax=test_surr.LMax,
     )
 
-
 def memory_time_model(
-    times,
-    mass_ratio,
-    s1x,
-    s2x,
-    s1y,
-    s2y,
-    s1z,
-    s2z,
     distance,
-    total_mass,
+    times,
     phase,
     inc,
     memory_constant,
-):
-    # first, we need a linear sample space
-    """
-    end_time can only be up to a certain time after merger, which is set in
-    geometric units. Conversion from geometric to physical units is given by:
-    phys_time = geo_time * (total_mass * m_sun_to_kg)/(c**3/G).
-    """
-    GG = 6.674098281543097e-11
-    cc = 2.99792458e8
-    m_sun_to_kg = 1.98847e30
-    t_f = time_lim[1] + 0.9  # Surrogate class cuts bound by 1.0s already
-    start_time = -0.5
-    end_time = t_f * (total_mass * m_sun_to_kg) / (cc ** 3 / GG)
-    surr_times = np.linspace(
-        start_time, end_time, sampling_frequency * (end_time - start_time)
-    )
-
-    # Now, to generate an oscillating and secular waveform...
-    surr = gwmemory.waveforms.surrogate.Surrogate(
-        q=mass_ratio,
-        spin_1=[s1x, s1y, s1z],
-        spin_2=[s2x, s2y, s2z],
-        total_mass=total_mass,
-        distance=distance,
-        times=surr_times,
-        modes=[(2,2)],
-    )
+):    
+    # First, to generate an oscillating and secular waveform...
     oscillatory, surr_times = surr.time_domain_oscillatory(
         inc=inc, phase=phase
     )
     memory, surr_times = surr.time_domain_memory(inc=inc, phase=phase)
 
-    # ...and add them
-    plus_new = oscillatory["plus"] + memory_constant * memory["plus"]
-    cross_new = oscillatory["cross"] + memory_constant * memory["cross"]
+    # ...and add them (also scale for distance)
+    plus_new = (oscillatory["plus"] + memory_constant * memory["plus"])/distance
+    cross_new = (oscillatory["cross"] + memory_constant * memory["cross"])/distance
 
     # Next, we want to place them in our sample space
     plus = np.zeros(len(times))
@@ -287,15 +249,15 @@ def memory_time_model(
 # parameters, including masses of the two black holes (mass_1, mass_2),
 # spins of both black holes (a, tilt, phi), etc.
 injection_parameters = dict(
-    total_mass=float(options.m),
+    mass_ratio=float(options.q),
     s1x=float(options.s1x),
     s2x=float(options.s2x),
     s1y=float(options.s1y),
     s2y=float(options.s2y),
     s1z=float(options.s1z),
     s2z=float(options.s2z),
+    total_mass=float(options.m),
     distance=float(options.d),
-    mass_ratio=float(options.q),
     inc=float(options.i),
     psi=float(options.psi),
     phase=float(options.phase),
@@ -305,7 +267,7 @@ injection_parameters = dict(
     geocent_time=float(options.t),
 )
 
-
+# retrieves valid template interval
 time_lim = get_t_0_t_f(
     mass_ratio=injection_parameters["mass_ratio"],
     s1x=injection_parameters["s1x"],
@@ -316,11 +278,32 @@ time_lim = get_t_0_t_f(
     s2z=injection_parameters["s2z"],
     distance=injection_parameters["distance"],
     total_mass=injection_parameters["total_mass"],
-    phase=injection_parameters["phase"],
-    inc=injection_parameters["inc"],
-    memory_constant=injection_parameters["memory_constant"],
 )
-
+# We need a linear sample space
+"""
+end_time can only be up to a certain time after merger, which is set in
+geometric units. Conversion from geometric to physical units is given by:
+phys_time = geo_time * (total_mass * m_sun_to_kg)/(c**3/G).
+"""
+GG = 6.674098281543097e-11
+cc = 2.99792458e8
+m_sun_to_kg = 1.98847e30
+t_f = time_lim[1] + 0.9  # Surrogate class cuts bound by 1.0s already
+start_time = -0.5
+end_time = t_f * (total_mass * m_sun_to_kg) / (cc ** 3 / GG)
+surr_times = np.linspace(
+    start_time, end_time, sampling_frequency * (end_time - start_time)
+)
+# We want to create a surrogate object
+surr = gwmemory.waveforms.surrogate.Surrogate(
+    q=injection_parameters["mass_ratio"],
+    spin_1=[injection_paramters["s1x"], injection_parameters["s1y"], injection_parameters["s1z"]],
+    spin_2=[injection_parameters["s2x"], injection_parameters["s2y"], injection_parameters["s2z"]],
+    total_mass=injection_parameters["total_mass"],
+    distance=1.0,
+    times=surr_times,
+    modes=[(2,2)],
+)
 
 # Create the waveform_generator using a LAL BinaryBlackHole source function
 waveform = bilby.gw.waveform_generator.WaveformGenerator(
@@ -329,7 +312,6 @@ waveform = bilby.gw.waveform_generator.WaveformGenerator(
     time_domain_source_model=memory_time_model,
     start_time=injection_parameters["geocent_time"] - duration / 2.0,
 )
-
 
 # Set up interferometers. In this case we'll use two interferometers
 # (LIGO-Hanford (H1), LIGO-Livingston (L1). These default to their design
@@ -355,9 +337,8 @@ ifos.inject_signal(
 # distance, which means those are the parameters that will be included in the
 # sampler.  If we do nothing, then the default priors get used.
 priors = injection_parameters.copy()
-priors["memory_constant"] = bilby.core.prior.Uniform(-3, 5, r"$\lambda$")
-#priors['distance'] = bilby.core.prior.Uniform(80, 120, r'$d_L$')
-#priors['mass_ratio'] = bilby.core.prior.Uniform(1.0, 1.99, 'q')
+priors["memory_constant"] = bilby.core.prior.Uniform(-5, 5, r"$\lambda$")
+# priors['distance'] = bilby.core.prior.Uniform(80, 120, r'$d_L$')
 priors["psi"] = bilby.core.prior.Uniform(0.0, np.pi, r"$\psi$")
 priors["phase"] = bilby.core.prior.Uniform(0.0, 2.0 * np.pi, r"$\phi$")
 
@@ -374,14 +355,12 @@ result = bilby.run_sampler(
     sampler="dynesty",
     use_ratio=True,
     plot=True,
-    npoints=100,
+    npoints=1000,
     sample="unif",
     verbose=True,
     injection_parameters=injection_parameters,
     outdir=outdir,
     label=label,
-    npool=6,
-    exit_code=77
 )
 
 # Make a corner plot.

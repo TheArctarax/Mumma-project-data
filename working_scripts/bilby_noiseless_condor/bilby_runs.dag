@@ -1,0 +1,2 @@
+JOB bilby_run_distance_0001 bilby_runs.sub 
+VARS bilby_run_distance_0001 DISTANCE='110' OUTDIR='/home/darin.mumma/public_html/bilby_noiseless_md/lamda_bimodality/' LABEL='distance_110' EXPERIMENT='lamda_bimodality' RUN='0001'

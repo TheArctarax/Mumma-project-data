@@ -1,3 +1,5 @@
+#!/home/darin.mumma/surf2020_env/bin/python
+
 from __future__ import division, print_function
 import matplotlib
 import numpy as np
@@ -252,10 +254,10 @@ injection_parameters = dict(
 )
 
 extrinsic_injection_parameters = dict(
-    distance=float(options.d)
-    inc=float(options.i)
-    phase=float(options.phase)
-    memory_constant=float(options.mc)
+    distance=float(options.d),
+    inc=float(options.i),
+    phase=float(options.phase),
+    memory_constant=float(options.mc),
 )
 
 # retrieves valid template interval
@@ -288,7 +290,7 @@ surr_times = np.linspace(
 # We want to create a surrogate object
 surr = gwmemory.waveforms.surrogate.Surrogate(
     q=injection_parameters["mass_ratio"],
-    spin_1=[injection_paramaters["s1x"], injection_parameters["s1y"], injection_parameters["s1z"]],
+    spin_1=[injection_parameters["s1x"], injection_parameters["s1y"], injection_parameters["s1z"]],
     spin_2=[injection_parameters["s2x"], injection_parameters["s2y"], injection_parameters["s2z"]],
     total_mass=injection_parameters["total_mass"],
     distance=1.0,

@@ -252,10 +252,10 @@ injection_parameters = dict(
 )
 
 extrinsic_injection_parameters = dict(
-    distance=float(options.d)
-    inc=float(options.i)
-    phase=float(options.phase)
-    memory_constant=float(options.mc)
+    distance=float(options.d),
+    inc=float(options.i),
+    phase=float(options.phase),
+    memory_constant=float(options.mc),
 )
 
 # retrieves valid template interval

@@ -1,0 +1,117 @@
+JOB bilby_run_distance_1 bilby_runs.sub
+VARS bilby_run_distance_1 DISTANCE='110' OUTDIR='/home/darin.mumma/public_html/bilby_noiseless/lambda_bimodality' LABEL='distance_110' EXPERIMENT='lambda_bimodality' RUN='1'
+
+JOB bilby_run_distance_2 bilby_runs.sub
+VARS bilby_run_distance_2 DISTANCE='120' OUTDIR='/home/darin.mumma/public_html/bilby_noiseless/lambda_bimodality' LABEL='distance_120' EXPERIMENT='lambda_bimodality' RUN='2'
+
+JOB bilby_run_distance_3 bilby_runs.sub
+VARS bilby_run_distance_3 DISTANCE='130' OUTDIR='/home/darin.mumma/public_html/bilby_noiseless/lambda_bimodality' LABEL='distance_130' EXPERIMENT='lambda_bimodality' RUN='3'
+
+JOB bilby_run_distance_4 bilby_runs.sub
+VARS bilby_run_distance_4 DISTANCE='140' OUTDIR='/home/darin.mumma/public_html/bilby_noiseless/lambda_bimodality' LABEL='distance_140' EXPERIMENT='lambda_bimodality' RUN='4'
+
+JOB bilby_run_distance_5 bilby_runs.sub
+VARS bilby_run_distance_5 DISTANCE='150' OUTDIR='/home/darin.mumma/public_html/bilby_noiseless/lambda_bimodality' LABEL='distance_150' EXPERIMENT='lambda_bimodality' RUN='5'
+
+JOB bilby_run_distance_6 bilby_runs.sub
+VARS bilby_run_distance_6 DISTANCE='160' OUTDIR='/home/darin.mumma/public_html/bilby_noiseless/lambda_bimodality' LABEL='distance_160' EXPERIMENT='lambda_bimodality' RUN='6'
+
+JOB bilby_run_distance_7 bilby_runs.sub
+VARS bilby_run_distance_7 DISTANCE='170' OUTDIR='/home/darin.mumma/public_html/bilby_noiseless/lambda_bimodality' LABEL='distance_170' EXPERIMENT='lambda_bimodality' RUN='7'
+
+JOB bilby_run_distance_8 bilby_runs.sub
+VARS bilby_run_distance_8 DISTANCE='180' OUTDIR='/home/darin.mumma/public_html/bilby_noiseless/lambda_bimodality' LABEL='distance_180' EXPERIMENT='lambda_bimodality' RUN='8'
+
+JOB bilby_run_distance_9 bilby_runs.sub
+VARS bilby_run_distance_9 DISTANCE='190' OUTDIR='/home/darin.mumma/public_html/bilby_noiseless/lambda_bimodality' LABEL='distance_190' EXPERIMENT='lambda_bimodality' RUN='9'
+
+JOB bilby_run_distance_10 bilby_runs.sub
+VARS bilby_run_distance_10 DISTANCE='200' OUTDIR='/home/darin.mumma/public_html/bilby_noiseless/lambda_bimodality' LABEL='distance_200' EXPERIMENT='lambda_bimodality' RUN='10'
+
+JOB bilby_run_distance_11 bilby_runs.sub
+VARS bilby_run_distance_11 DISTANCE='210' OUTDIR='/home/darin.mumma/public_html/bilby_noiseless/lambda_bimodality' LABEL='distance_210' EXPERIMENT='lambda_bimodality' RUN='11'
+
+JOB bilby_run_distance_12 bilby_runs.sub
+VARS bilby_run_distance_12 DISTANCE='220' OUTDIR='/home/darin.mumma/public_html/bilby_noiseless/lambda_bimodality' LABEL='distance_220' EXPERIMENT='lambda_bimodality' RUN='12'
+
+JOB bilby_run_distance_13 bilby_runs.sub
+VARS bilby_run_distance_13 DISTANCE='230' OUTDIR='/home/darin.mumma/public_html/bilby_noiseless/lambda_bimodality' LABEL='distance_230' EXPERIMENT='lambda_bimodality' RUN='13'
+
+JOB bilby_run_distance_14 bilby_runs.sub
+VARS bilby_run_distance_14 DISTANCE='240' OUTDIR='/home/darin.mumma/public_html/bilby_noiseless/lambda_bimodality' LABEL='distance_240' EXPERIMENT='lambda_bimodality' RUN='14'
+
+JOB bilby_run_distance_15 bilby_runs.sub
+VARS bilby_run_distance_15 DISTANCE='250' OUTDIR='/home/darin.mumma/public_html/bilby_noiseless/lambda_bimodality' LABEL='distance_250' EXPERIMENT='lambda_bimodality' RUN='15'
+
+JOB bilby_run_distance_16 bilby_runs.sub
+VARS bilby_run_distance_16 DISTANCE='260' OUTDIR='/home/darin.mumma/public_html/bilby_noiseless/lambda_bimodality' LABEL='distance_260' EXPERIMENT='lambda_bimodality' RUN='16'
+
+JOB bilby_run_distance_17 bilby_runs.sub
+VARS bilby_run_distance_17 DISTANCE='270' OUTDIR='/home/darin.mumma/public_html/bilby_noiseless/lambda_bimodality' LABEL='distance_270' EXPERIMENT='lambda_bimodality' RUN='17'
+
+JOB bilby_run_distance_18 bilby_runs.sub
+VARS bilby_run_distance_18 DISTANCE='280' OUTDIR='/home/darin.mumma/public_html/bilby_noiseless/lambda_bimodality' LABEL='distance_280' EXPERIMENT='lambda_bimodality' RUN='18'
+
+JOB bilby_run_distance_19 bilby_runs.sub
+VARS bilby_run_distance_19 DISTANCE='290' OUTDIR='/home/darin.mumma/public_html/bilby_noiseless/lambda_bimodality' LABEL='distance_290' EXPERIMENT='lambda_bimodality' RUN='19'
+
+JOB bilby_run_distance_20 bilby_runs.sub
+VARS bilby_run_distance_20 DISTANCE='300' OUTDIR='/home/darin.mumma/public_html/bilby_noiseless/lambda_bimodality' LABEL='distance_300' EXPERIMENT='lambda_bimodality' RUN='20'
+
+JOB bilby_run_distance_21 bilby_runs.sub
+VARS bilby_run_distance_21 DISTANCE='310' OUTDIR='/home/darin.mumma/public_html/bilby_noiseless/lambda_bimodality' LABEL='distance_310' EXPERIMENT='lambda_bimodality' RUN='21'
+
+JOB bilby_run_distance_22 bilby_runs.sub
+VARS bilby_run_distance_22 DISTANCE='320' OUTDIR='/home/darin.mumma/public_html/bilby_noiseless/lambda_bimodality' LABEL='distance_320' EXPERIMENT='lambda_bimodality' RUN='22'
+
+JOB bilby_run_distance_23 bilby_runs.sub
+VARS bilby_run_distance_23 DISTANCE='330' OUTDIR='/home/darin.mumma/public_html/bilby_noiseless/lambda_bimodality' LABEL='distance_330' EXPERIMENT='lambda_bimodality' RUN='23'
+
+JOB bilby_run_distance_24 bilby_runs.sub
+VARS bilby_run_distance_24 DISTANCE='340' OUTDIR='/home/darin.mumma/public_html/bilby_noiseless/lambda_bimodality' LABEL='distance_340' EXPERIMENT='lambda_bimodality' RUN='24'
+
+JOB bilby_run_distance_25 bilby_runs.sub
+VARS bilby_run_distance_25 DISTANCE='350' OUTDIR='/home/darin.mumma/public_html/bilby_noiseless/lambda_bimodality' LABEL='distance_350' EXPERIMENT='lambda_bimodality' RUN='25'
+
+JOB bilby_run_distance_26 bilby_runs.sub
+VARS bilby_run_distance_26 DISTANCE='360' OUTDIR='/home/darin.mumma/public_html/bilby_noiseless/lambda_bimodality' LABEL='distance_360' EXPERIMENT='lambda_bimodality' RUN='26'
+
+JOB bilby_run_distance_27 bilby_runs.sub
+VARS bilby_run_distance_27 DISTANCE='370' OUTDIR='/home/darin.mumma/public_html/bilby_noiseless/lambda_bimodality' LABEL='distance_370' EXPERIMENT='lambda_bimodality' RUN='27'
+
+JOB bilby_run_distance_28 bilby_runs.sub
+VARS bilby_run_distance_28 DISTANCE='380' OUTDIR='/home/darin.mumma/public_html/bilby_noiseless/lambda_bimodality' LABEL='distance_380' EXPERIMENT='lambda_bimodality' RUN='28'
+
+JOB bilby_run_distance_29 bilby_runs.sub
+VARS bilby_run_distance_29 DISTANCE='390' OUTDIR='/home/darin.mumma/public_html/bilby_noiseless/lambda_bimodality' LABEL='distance_390' EXPERIMENT='lambda_bimodality' RUN='29'
+
+JOB bilby_run_distance_30 bilby_runs.sub
+VARS bilby_run_distance_30 DISTANCE='400' OUTDIR='/home/darin.mumma/public_html/bilby_noiseless/lambda_bimodality' LABEL='distance_400' EXPERIMENT='lambda_bimodality' RUN='30'
+
+JOB bilby_run_distance_31 bilby_runs.sub
+VARS bilby_run_distance_31 DISTANCE='410' OUTDIR='/home/darin.mumma/public_html/bilby_noiseless/lambda_bimodality' LABEL='distance_410' EXPERIMENT='lambda_bimodality' RUN='31'
+
+JOB bilby_run_distance_32 bilby_runs.sub
+VARS bilby_run_distance_32 DISTANCE='420' OUTDIR='/home/darin.mumma/public_html/bilby_noiseless/lambda_bimodality' LABEL='distance_420' EXPERIMENT='lambda_bimodality' RUN='32'
+
+JOB bilby_run_distance_33 bilby_runs.sub
+VARS bilby_run_distance_33 DISTANCE='430' OUTDIR='/home/darin.mumma/public_html/bilby_noiseless/lambda_bimodality' LABEL='distance_430' EXPERIMENT='lambda_bimodality' RUN='33'
+
+JOB bilby_run_distance_34 bilby_runs.sub
+VARS bilby_run_distance_34 DISTANCE='440' OUTDIR='/home/darin.mumma/public_html/bilby_noiseless/lambda_bimodality' LABEL='distance_440' EXPERIMENT='lambda_bimodality' RUN='34'
+
+JOB bilby_run_distance_35 bilby_runs.sub
+VARS bilby_run_distance_35 DISTANCE='450' OUTDIR='/home/darin.mumma/public_html/bilby_noiseless/lambda_bimodality' LABEL='distance_450' EXPERIMENT='lambda_bimodality' RUN='35'
+
+JOB bilby_run_distance_36 bilby_runs.sub
+VARS bilby_run_distance_36 DISTANCE='460' OUTDIR='/home/darin.mumma/public_html/bilby_noiseless/lambda_bimodality' LABEL='distance_460' EXPERIMENT='lambda_bimodality' RUN='36'
+
+JOB bilby_run_distance_37 bilby_runs.sub
+VARS bilby_run_distance_37 DISTANCE='470' OUTDIR='/home/darin.mumma/public_html/bilby_noiseless/lambda_bimodality' LABEL='distance_470' EXPERIMENT='lambda_bimodality' RUN='37'
+
+JOB bilby_run_distance_38 bilby_runs.sub
+VARS bilby_run_distance_38 DISTANCE='480' OUTDIR='/home/darin.mumma/public_html/bilby_noiseless/lambda_bimodality' LABEL='distance_480' EXPERIMENT='lambda_bimodality' RUN='38'
+
+JOB bilby_run_distance_39 bilby_runs.sub
+VARS bilby_run_distance_39 DISTANCE='490' OUTDIR='/home/darin.mumma/public_html/bilby_noiseless/lambda_bimodality' LABEL='distance_490' EXPERIMENT='lambda_bimodality' RUN='39'
+

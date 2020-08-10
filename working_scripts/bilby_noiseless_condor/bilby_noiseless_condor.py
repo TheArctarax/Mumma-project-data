@@ -267,6 +267,13 @@ injection_parameters = dict(
     geocent_time=float(options.t),
 )
 
+extrinsic_injection_parameters = dict(
+    distance=float(options.d) 
+    inc=float(options.i)
+    phase=float(options.phase)
+    memory_constant=float(options.mc)
+)
+
 # retrieves valid template interval
 time_lim = get_t_0_t_f(
     mass_ratio=injection_parameters["mass_ratio"],
@@ -336,11 +343,12 @@ ifos.inject_signal(
 # The above list does *not* include mass_1, mass_2, theta_jn and luminosity
 # distance, which means those are the parameters that will be included in the
 # sampler.  If we do nothing, then the default priors get used.
-priors = injection_parameters.copy()
+priors = extrinsic_injection_parameters.copy()
 priors["memory_constant"] = bilby.core.prior.Uniform(-5, 5, r"$\lambda$")
-# priors['distance'] = bilby.core.prior.Uniform(80, 120, r'$d_L$')
+priors["distance"] = bilby.core.prior.Uniform(80, 120, r"$d_L$")
 priors["psi"] = bilby.core.prior.Uniform(0.0, np.pi, r"$\psi$")
 priors["phase"] = bilby.core.prior.Uniform(0.0, 2.0 * np.pi, r"$\phi$")
+priors["inc"] = bilby.core.prior.Uniform(0.0, np.pi, r"$i$")
 
 # Initialise the likelihood by passing in the interferometer data (ifos) and
 # the waveform generator

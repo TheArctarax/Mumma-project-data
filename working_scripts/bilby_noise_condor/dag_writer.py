@@ -7,7 +7,7 @@ start_val = 110
 end_val = 490
 val_spacing = 10
 
-job_array = np.linspace(start_val, end_val, int((end_val - start_val) / val_spacing))
+job_array = np.arange(start_val, end_val + val_spacing, val_spacing)
 number_of_jobs = len(job_array)
 
 with open("bilby_runs_test.dag", "w", encoding="utf-8") as f:

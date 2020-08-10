@@ -1,5 +1,5 @@
 accounting_group_user = darin.mumma
-accounting_group = ligo.sim.03.cbc.pe.lalinferencerapid
+accounting_group = ligo.sim.o3.cbc.pe.lalinferencerapid
 universe = vanilla
 getenv = true
 output = ./output/$(EXPERIMENT)_$(RUN).out
@@ -11,7 +11,7 @@ when_to_transfer_output = ON_EXIT
 request_disk = 3GB
 request_memory = 5GB
 transfer_input_files = bilby_noiseless_md_condor.py
-executable = /home/darin.mumma/Mumma-project-data/working_scripts/bilby_noiseless_md_condor/bilby_noiseless_md_condor.py
+executable = /home/darin.mumma/Mumma-project-data/working_scripts/bilby_noiseless_condor/bilby_noiseless_md_condor.py
 arguments = ' --d $(DISTANCE) --outdir $(OUTDIR) --label $(LABEL) '
 want_graceful_removal = True
 request_cpus = 6

@@ -23,88 +23,72 @@ def parse_command_line():
     parser.add_argument('--m',
                         '--total_mass',
                         help='total mass of CBC source',
-                        action='store_true',
                         default=60.,
     )
     parser.add_argument('--s1x',
                         help='x-projected spin of first binary component',
-                        action='store_true',
                         default=0.,
     )
     parser.add_argument('--s2x',
                         help='x-projected spin of second binary component',
-                        action='store_true',
                         default=0.,
     )
     parser.add_argument('--s1y',
                         help='y-projected spin of first binary component',
-                        action='store_true',
                         default=0.,
     )
     parser.add_argument('--s2y',
                         help='y-projected spin of second binary component',
-                        action='store_true',
                         default=0.,
     )
     parser.add_argument('--s1z',
                         help='z-projected spin of first binary component',
-                        action='store_true',
                         default=0.,
     )
     parser.add_argument('--s2z',
                         help='z-projected spin of second binary component',
-                        action='store_true',
                         default=0.,
     )
     parser.add_argument('--d',
                         '--distance',
                         help='luminosity distance to CBC source',
-                        action='store_true',
                         default=100.,
     )
     parser.add_argument('--q',
                         '--mass_ratio',
                         help='mass ratio (m1/m2) of CBC source',
-                        action='store_true',
-                        default=1.5,
+                        default=1.0,
     )
     parser.add_argument('--i',
                         '--inclination',
                         help='inclination of CBC source (0 = face-on, np.pi/2 = edge-on)',
-                        action='store_true',
                         default=np.pi / 2.,
     )
     parser.add_argument('--psi',
                         '--polarization_angle',
                         help='gravitational wave polarization angle (0 <= psi <= np.pi)',
-                        action='store_true',
                         default=0.,
     )
     parser.add_argument('--phase',
                         help='gravitational wave phase (0 <= phase <= 2*np.pi)',
-                        action='store_true',
                         default=0.,
     )
     parser.add_argument('--mc',
                         '--memory_constant',
                         help='scaling factor for the gw memory term',
-                        action='store_true',
                         default=1.,
     )
     parser.add_argument('--ra',
                         help='right ascension of CBC source',
-                        action='store_true',
                         default=0.,
     )
     parser.add_argument('--dec',
                         help='declination of CBC source',
-                        action='store_true',
                         default=0.,
     )
     parser.add_argument('--t',
                         '--geocent_time',
                         help='time of merger (max signal amplitude); usually 0',
-                        action='store_true',
                         default=0.,
     )
 
@@ -183,8 +167,8 @@ def get_t_0_t_f(
     )
 
 def memory_time_model(
-    distance,
     times,
+    distance,
     phase,
     inc,
     memory_constant,
@@ -267,6 +251,13 @@ injection_parameters = dict(
     geocent_time=float(options.t),
 )
 
+extrinsic_injection_parameters = dict(
+    distance=float(options.d)
+    inc=float(options.i)
+    phase=float(options.phase)
+    memory_constant=float(options.mc)
+)
+
 # retrieves valid template interval
 time_lim = get_t_0_t_f(
     mass_ratio=injection_parameters["mass_ratio"],
@@ -290,14 +281,14 @@ cc = 2.99792458e8
 m_sun_to_kg = 1.98847e30
 t_f = time_lim[1] + 0.9  # Surrogate class cuts bound by 1.0s already
 start_time = -0.5
-end_time = t_f * (total_mass * m_sun_to_kg) / (cc ** 3 / GG)
+end_time = t_f * (injection_parameters['total_mass'] * m_sun_to_kg) / (cc ** 3 / GG)
 surr_times = np.linspace(
     start_time, end_time, sampling_frequency * (end_time - start_time)
 )
 # We want to create a surrogate object
 surr = gwmemory.waveforms.surrogate.Surrogate(
     q=injection_parameters["mass_ratio"],
-    spin_1=[injection_paramters["s1x"], injection_parameters["s1y"], injection_parameters["s1z"]],
+    spin_1=[injection_paramaters["s1x"], injection_parameters["s1y"], injection_parameters["s1z"]],
     spin_2=[injection_parameters["s2x"], injection_parameters["s2y"], injection_parameters["s2z"]],
     total_mass=injection_parameters["total_mass"],
     distance=1.0,
@@ -338,9 +329,10 @@ ifos.inject_signal(
 # sampler.  If we do nothing, then the default priors get used.
 priors = injection_parameters.copy()
 priors["memory_constant"] = bilby.core.prior.Uniform(-5, 5, r"$\lambda$")
-# priors['distance'] = bilby.core.prior.Uniform(80, 120, r'$d_L$')
+# priors["distance"] = bilby.core.prior.Uniform(80, 120, r"$d_L$")
 priors["psi"] = bilby.core.prior.Uniform(0.0, np.pi, r"$\psi$")
 priors["phase"] = bilby.core.prior.Uniform(0.0, 2.0 * np.pi, r"$\phi$")
+# priors["inc"] = bilby.core.prior.Uniform(0.0, np.pi, r"$i$")
 
 # Initialise the likelihood by passing in the interferometer data (ifos) and
 # the waveform generator
@@ -356,7 +348,7 @@ result = bilby.run_sampler(
     use_ratio=True,
     plot=True,
     npoints=1000,
-    sample="unif",
+    sample="rwalk",
     verbose=True,
     injection_parameters=injection_parameters,
     outdir=outdir,

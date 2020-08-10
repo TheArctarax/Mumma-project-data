@@ -66,7 +66,7 @@ def parse_command_line():
                         '--mass_ratio',
                         help='mass ratio (m1/m2) of CBC source',
                         action='store_true',
-                        default=1.5,
+                        default=1.0,
     )
     parser.add_argument('--i',
                         '--inclination',

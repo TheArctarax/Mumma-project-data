@@ -11,9 +11,9 @@ import argparse
 np.seterr(divide="ignore", invalid="ignore")
 
 """
-This code computes the posterior distribution for a MULTIDIMENSIONAL parameter
+This code computes the posterior distribution for an n-dimensional parameter
 space which includes the memory constant. Here, we use GWMemory to inject a
-waveform + memory model into NOISELESS data.
+waveform + memory model into NOISY data.
 """
 
 def parse_command_line():
@@ -317,7 +317,7 @@ waveform = bilby.gw.waveform_generator.WaveformGenerator(
 # (LIGO-Hanford (H1), LIGO-Livingston (L1). These default to their design
 # sensitivity
 ifos = bilby.gw.detector.InterferometerList(["H1", "L1", "V1"])
-ifos.set_strain_data_from_zero_noise(
+ifos.set_strain_data_from_power_spectral_densities(
     sampling_frequency=sampling_frequency,
     duration=duration,
     start_time=injection_parameters["geocent_time"] - duration / 2.0,

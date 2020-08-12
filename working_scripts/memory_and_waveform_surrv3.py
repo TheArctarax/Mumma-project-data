@@ -15,20 +15,20 @@ S2 = [0., 0., 0.]
 inc = np.pi / 2
 pol = 0.0
 d=600
-M=60
+M=120
 q=1.0
 
 
 # Sample space definition for the memory's t-axis. Purposely set to begin, end, and have the same number of points as the
 # original waveform so that superposition of the timeseries is possible.
 start_time=-0.5
-end_time=0.02
+end_time=0.0
 times = np.linspace(start_time, end_time, sampling_frequency * (end_time-start_time))
 
 
 # GW waveform with memory definition
 # The sub-function waveforms.surrogate.Surrogate generates a surrogate object.
-surr = gwmemory.waveforms.surrogate.Surrogate(q=q, name='nrsur7dq2', spin_1=S1, spin_2=S2, total_mass=M, distance=d, times=times)
+surr = gwmemory.waveforms.surrogate.Surrogate(q=q, name='nrsur7dq4', spin_1=S1, spin_2=S2, total_mass=M, distance=d, times=times)
 '''
 Got omega_ref = 0.0093 < 0.0161 = omega_0, too small
 Got omega_ref = 0.0093 < 0.0161 = omega_0, too small
@@ -82,7 +82,7 @@ rc('xtick', labelsize=14)
 rc('ytick', labelsize=14)
 rc('axes', labelsize=16)
 
-savefig('original_waveformsurr.pdf')
+savefig('oscillatory_dq4.pdf')
 
 tight_layout()
 show()

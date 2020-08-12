@@ -176,14 +176,12 @@ def memory_time_model(
     memory_constant,
 ):    
     # First, to generate an oscillating and secular waveform...
-    oscillatory, surr_times = surr.time_domain_oscillatory(
-        inc=inc, phase=phase
-    )
-    memory, surr_times = surr.time_domain_memory(inc=inc, phase=phase)
+    oscillatory = gwmemory.utils.combine_modes(h_lm, inc, phase)
+    memory = gwmemory.utils.combine_modes(h_lm_mem, inc, phase)
 
     # ...and add them (also scale for distance)
-    plus_new = (oscillatory["plus"] + memory_constant * memory["plus"])/distance
-    cross_new = (oscillatory["cross"] + memory_constant * memory["cross"])/distance
+    plus_new = (oscillatory["plus"] + memory_constant * memory["plus"]) / distance
+    cross_new = (oscillatory["cross"] + memory_constant * memory["cross"]) / distance
 
     # Next, we want to place them in our sample space
     plus = np.zeros(len(times))
@@ -297,6 +295,9 @@ surr = gwmemory.waveforms.surrogate.Surrogate(
     times=surr_times,
     modes=[(2,2)],
 )
+
+h_lm, surr_times = surr.time_domain_oscillatory(times=surr_times)
+h_lm_memory, surr_times = surr.time_domain_memory(times=surr_times)
 
 # Create the waveform_generator using a LAL BinaryBlackHole source function
 waveform = bilby.gw.waveform_generator.WaveformGenerator(

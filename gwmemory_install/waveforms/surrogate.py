@@ -83,6 +83,28 @@ class Surrogate(MemoryGenerator):
             else:
                 self.S2 = np.array(spin_2)
 
+        elif name.lower() == "nrsur7dq4":
+            import gwsurrogate
+            gwsurrogate.catalog.pull('NRSur7dq4')
+            self.sur = gwsurrogate.LoadSurrogate('NRSur7dq4')
+
+            if q < 1:
+                q = 1 / q
+            if q > 4:
+                print('WARNING: Hybrdid surrogate waveform not tested for q>4.')
+            self.q = q
+            self.Mtot = total_mass
+            if spin_1 is None:
+                self.chi_1 = 0.0
+            else:
+                self.chi_1 = spin_1
+            if spin_2 is None:
+                self.chi_2 = 0.0
+            else:
+                self.chi_2 = spin_2
+            self.minimum_frequency = minimum_frequency
+            self.sampling_frequency = sampling_frequency
+
         elif name.lower() == "nrhybsur3dq8":
             import gwsurrogate
             self.sur = gwsurrogate.LoadSurrogate('NRHybSur3dq8')
@@ -165,6 +187,14 @@ class Surrogate(MemoryGenerator):
                 times = times / self.t_to_geo
                 h_lm = self.sur(self.q, self.S1, self.S2, MTot=self.MTot,
                                 distance=self.distance, t=times, LMax=self.LMax)
+
+            elif self.name.lower() == "nrsur7dq4":
+                times, h_lm = self.sur(
+                    q=self.q, chiA0=self.chi_1, chiB0=self.chi_2, M=self.MTot,
+                    dist_mpc=self.distance, dt=1 / self.sampling_frequency,
+                    f_low=self.minimum_frequency, mode_list=self.modes,
+                    units='mks')
+    
             elif self.name.lower() == "nrhybsur3dq8":
                 times, h_lm = self.sur(
                     x=[self.q, self.chi_1, self.chi_2], M=self.MTot,

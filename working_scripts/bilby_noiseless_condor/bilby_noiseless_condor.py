@@ -97,7 +97,7 @@ def parse_command_line():
     options = parser.parse_args()
     
     if (options.outdir == None):
-        raise FileNotFoundError('You forgot to specify the output directory')
+        raise IOError('You forgot to specify the output directory')
 
     return options
 
@@ -118,15 +118,6 @@ bilby.core.utils.setup_logger(outdir=outdir, label=label)
 
 # Set up a random seed for result reproducibility. May or may not need this.
 np.random.seed(88170235)
-
-
-def time_domain_window(time_domain_strain, window_type=None):
-    if window_type != None:
-        window = get_window(window_type, time_domain_strain.size)
-        time_domain_strain = time_domain_strain * window
-
-    return time_domain_strain
-
 
 # Returns a two-dimensional array with lower and upper time bounds as elements. This is done by creates sur object of equal specification to the desired signal and extracting its get_t_lim attribute.
 def get_t_0_t_f(
@@ -183,12 +174,6 @@ def memory_time_model(
     plus_new = (oscillatory["plus"] + memory_constant * memory["plus"]) / distance
     cross_new = (oscillatory["cross"] + memory_constant * memory["cross"]) / distance
 
-    # Next, we want to place them in our sample space
-    plus = np.zeros(len(times))
-    cross = np.zeros(len(times))
-    plus[-len(surr_times) :] = plus_new
-    cross[-len(surr_times) :] = cross_new
-
     # Finally, we need to window before applying an fft
     """
     Window types provided by scipy.signal.windows.get_window
@@ -219,11 +204,11 @@ def memory_time_model(
 
     ------------------------------------------------------------------------------
     """
-    window_type_plus = ("kaiser", 0.1)
-    window_type_cross = ("kaiser", 0.1)
-
-    plus = time_domain_window(plus, window_type=window_type_plus)
-    cross = time_domain_window(cross, window_type=window_type_cross)
+    # Next, we want to place them in our sample space
+    plus = np.zeros(len(times))
+    cross = np.zeros(len(times))
+    plus[-len(surr_times) :] = plus_new * window
+    cross[-len(surr_times) :] = cross_new * window
 
     return {"plus": plus, "cross": cross}
 
@@ -293,11 +278,14 @@ surr = gwmemory.waveforms.surrogate.Surrogate(
     total_mass=injection_parameters["total_mass"],
     distance=1.0,
     times=surr_times,
-    modes=[(2,2)],
+    modes=[(2,2),(2,-2)],
 )
 
-h_lm, surr_times = surr.time_domain_oscillatory(times=surr_times)
-h_lm_memory, surr_times = surr.time_domain_memory(times=surr_times)
+h_lm, surr_times = surr.time_domain_oscillatory()
+h_lm_mem, surr_times = surr.time_domain_memory()
+
+window_type = ("kaiser", 0.1)
+window = get_window(window_type, surr_times.size)
 
 # Create the waveform_generator using a LAL BinaryBlackHole source function
 waveform = bilby.gw.waveform_generator.WaveformGenerator(
@@ -306,6 +294,8 @@ waveform = bilby.gw.waveform_generator.WaveformGenerator(
     time_domain_source_model=memory_time_model,
     start_time=injection_parameters["geocent_time"] - duration / 2.0,
 )
+
+times = waveform.time_array
 
 # Set up interferometers. In this case we'll use two interferometers
 # (LIGO-Hanford (H1), LIGO-Livingston (L1). These default to their design
@@ -335,7 +325,7 @@ priors["memory_constant"] = bilby.core.prior.Uniform(-5, 5, r"$\lambda$")
 # priors["distance"] = bilby.core.prior.Uniform(80, 120, r"$d_L$")
 priors["psi"] = bilby.core.prior.Uniform(0.0, np.pi, r"$\psi$")
 priors["phase"] = bilby.core.prior.Uniform(0.0, 2.0 * np.pi, r"$\phi$")
-# priors["inc"] = bilby.core.prior.Uniform(0.0, np.pi, r"$i$")
+# priors["inc"] = bilby.core.prior.Sine(0.0, np.pi, r"$i$")
 
 # Initialise the likelihood by passing in the interferometer data (ifos) and
 # the waveform generator
@@ -351,7 +341,8 @@ result = bilby.run_sampler(
     use_ratio=True,
     plot=True,
     npoints=1000,
-    sample="unif",
+    sample="rwalk",
+    walks=20,
     verbose=True,
     injection_parameters=injection_parameters,
     outdir=outdir,

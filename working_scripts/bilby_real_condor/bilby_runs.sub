@@ -1,0 +1,18 @@
+accounting_group_user = darin.mumma
+accounting_group = ligo.sim.o3.cbc.pe.lalinferencerapid
+universe = vanilla
+getenv = true
+output = ./output/$(EXPERIMENT)_$(RUN).out
+error = ./error/$(EXPERIMENT)_$(RUN).err
+log = ./log/$(EXPERIMENT)_$(RUN).log
+notification = Never
+should_transfer_files = YES
+when_to_transfer_output = ON_EXIT
+request_disk = 3GB
+request_memory = 5GB
+transfer_input_files = bilby_real.py
+executable = ./bilby_real.py
+arguments = " --d $(DISTANCE) --outdir $(OUTDIR) --label $(LABEL) "
+want_graceful_removal = True
+request_cpus = 6
+queue 1

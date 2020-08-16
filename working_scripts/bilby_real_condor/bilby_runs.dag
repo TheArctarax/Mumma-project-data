@@ -1,0 +1,3 @@
+JOB bilby_run_distance_1 bilby_runs.sub
+VARS bilby_run_distance_1 DISTANCE="100" OUTDIR="/home/darin.mumma/public_html/bilby_real/reduced_runtime_test" LABEL="distance_100" EXPERIMENT="reduced_runtime_test" RUN="1"
+

@@ -299,7 +299,7 @@ times = waveform.time_array
 # (LIGO-Hanford (H1), LIGO-Livingston (L1). These default to their design
 # sensitivity
 logger = bilby.core.utils.logger
-trigger_time = float(options.geocent_time)
+trigger_time = float(options.t)
 roll_off = 0.4  # Roll off duration of tukey window in seconds, default is 0.4s
 duration = 4  # Analysis segment duration
 post_trigger_duration = 2  # Time between trigger time and end of segment

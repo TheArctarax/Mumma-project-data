@@ -275,7 +275,7 @@ surr = gwmemory.waveforms.surrogate.Surrogate(
     total_mass=injection_parameters["total_mass"],
     distance=1.0,
     times=surr_times,
-    modes=[(2,2),(2,-2)],
+    # modes=[(2,2),(2,-2)],
 )
 
 h_lm, surr_times = surr.time_domain_oscillatory()

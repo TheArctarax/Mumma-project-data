@@ -9,6 +9,7 @@ from gwmemory import utils as utils
 import itertools
 from scipy.signal import get_window
 import argparse
+from gwpy.timeseries import TimeSeries
 
 np.seterr(divide="ignore", invalid="ignore")
 
@@ -297,8 +298,8 @@ times = waveform.time_array
 # Set up interferometers. In this case we'll use two interferometers
 # (LIGO-Hanford (H1), LIGO-Livingston (L1). These default to their design
 # sensitivity
-trigger_time = 1126259462
-
+logger = bilby.core.utils.logger
+trigger_time = float(options.geocent_time)
 roll_off = 0.4  # Roll off duration of tukey window in seconds, default is 0.4s
 duration = 4  # Analysis segment duration
 post_trigger_duration = 2  # Time between trigger time and end of segment

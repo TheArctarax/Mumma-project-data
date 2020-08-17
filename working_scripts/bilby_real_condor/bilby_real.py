@@ -357,7 +357,7 @@ priors["inc"] = bilby.core.prior.Sine(
 # Initialise the likelihood by passing in the interferometer data (ifos) and
 # the waveform generator
 likelihood = bilby.gw.GravitationalWaveTransient(
-    interferometers=ifos, waveform_generator=waveform
+    interferometers=ifo_list, waveform_generator=waveform
 )
 
 # Run sampler.  In this case we're going to use the `dynesty` sampler

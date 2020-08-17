@@ -15,9 +15,10 @@ np.seterr(divide="ignore", invalid="ignore")
 """
 This code computes the posterior distribution for an n-dimensional parameter
 space which includes the memory constant. Here, we use GWMemory to inject a
-waveform + memory model into NOISELESS data.
+waveform + memory model into REAL data.
 """
 
+# default values are set to GW150914's parameters
 def parse_command_line():
     parser = argparse.ArgumentParser()
     parser.add_argument('--outdir', help='output directory')
@@ -25,7 +26,7 @@ def parse_command_line():
     parser.add_argument('--m',
                         '--total_mass',
                         help='total mass of CBC source',
-                        default=60.,
+                        default=70.436052,
     )
     parser.add_argument('--s1x',
                         help='x-projected spin of first binary component',
@@ -45,35 +46,35 @@ def parse_command_line():
     )
     parser.add_argument('--s1z',
                         help='z-projected spin of first binary component',
-                        default=0.,
+                        default=0.10151,
     )
     parser.add_argument('--s2z',
                         help='z-projected spin of second binary component',
-                        default=0.,
+                        default=-0.216688,
     )
     parser.add_argument('--d',
                         '--distance',
                         help='luminosity distance to CBC source',
-                        default=100.,
+                        default=342.21115,
     )
     parser.add_argument('--q',
                         '--mass_ratio',
                         help='mass ratio (m1/m2) of CBC source',
-                        default=1.0,
+                        default=0.9003307,
     )
     parser.add_argument('--i',
                         '--inclination',
                         help='inclination of CBC source (0 = face-on, np.pi/2 = edge-on)',
-                        default=np.pi / 2.,
+                        default=2.469643,
     )
     parser.add_argument('--psi',
                         '--polarization_angle',
                         help='gravitational wave polarization angle (0 <= psi <= np.pi)',
-                        default=0.,
+                        default=0.035035,
     )
     parser.add_argument('--phase',
                         help='gravitational wave phase (0 <= phase <= 2*np.pi)',
-                        default=0.,
+                        default=1.972995,
     )
     parser.add_argument('--mc',
                         '--memory_constant',
@@ -82,16 +83,16 @@ def parse_command_line():
     )
     parser.add_argument('--ra',
                         help='right ascension of CBC source',
-                        default=0.,
+                        default=1.157876,
     )
     parser.add_argument('--dec',
                         help='declination of CBC source',
-                        default=0.,
+                        default=-1.19108,
     )
     parser.add_argument('--t',
                         '--geocent_time',
                         help='time of merger (max signal amplitude); usually 0',
-                        default=0.,
+                        default=1.126259*(10.0**9.0),
     )
 
     options = parser.parse_args()
@@ -289,7 +290,6 @@ waveform = bilby.gw.waveform_generator.WaveformGenerator(
     duration=duration,
     sampling_frequency=sampling_frequency,
     time_domain_source_model=memory_time_model,
-    start_time=injection_parameters["geocent_time"] - duration / 2.0,
 )
 
 times = waveform.time_array
@@ -297,15 +297,38 @@ times = waveform.time_array
 # Set up interferometers. In this case we'll use two interferometers
 # (LIGO-Hanford (H1), LIGO-Livingston (L1). These default to their design
 # sensitivity
-ifos = bilby.gw.detector.InterferometerList(["H1", "L1", "V1"])
-ifos.set_strain_data_from_power_spectral_densities(
-    sampling_frequency=sampling_frequency,
-    duration=duration,
-    start_time=injection_parameters["geocent_time"] - duration / 2.0,
-)
-ifos.inject_signal(
-    waveform_generator=waveform, parameters=injection_parameters
-)
+trigger_time = 1126259462
+
+roll_off = 0.4  # Roll off duration of tukey window in seconds, default is 0.4s
+duration = 4  # Analysis segment duration
+post_trigger_duration = 2  # Time between trigger time and end of segment
+end_time = trigger_time + post_trigger_duration
+start_time = end_time - duration
+
+psd_duration = 32 * duration
+psd_start_time = start_time - psd_duration
+psd_end_time = start_time
+
+# We now use gwpy to obtain analysis and psd data and create the ifo_list
+ifo_list = bilby.gw.detector.InterferometerList([])
+for det in ["H1", "L1"]:
+    logger.info("Downloading analysis data for ifo {}".format(det))
+    ifo = bilby.gw.detector.get_empty_interferometer(det)
+    data = TimeSeries.fetch_open_data(det, start_time, end_time)
+    ifo.strain_data.set_from_gwpy_timeseries(data)
+
+    logger.info("Downloading psd data for ifo {}".format(det))
+    psd_data = TimeSeries.fetch_open_data(det, psd_start_time, psd_end_time)
+    psd_alpha = 2 * roll_off / duration
+    psd = psd_data.psd(
+        fftlength=duration,
+        overlap=0,
+        window=("tukey", psd_alpha),
+        method="median"
+    )
+    ifo.power_spectral_density = bilby.gw.detector.PowerSpectralDensity(
+        frequency_array=psd.frequencies.value, psd_array=psd.value)
+    ifo_list.append(ifo)
 
 # Set up a PriorDict, which inherits from dict.
 # By default we will sample all terms in the signal models. However, this will

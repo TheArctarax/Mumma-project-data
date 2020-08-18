@@ -1,3 +1,3 @@
-JOB bilby_run_distance_1 bilby_runs.sub
-VARS bilby_run_distance_1 DISTANCE="100" OUTDIR="/home/darin.mumma/public_html/bilby_real/reduced_runtime_test" LABEL="distance_100" EXPERIMENT="reduced_runtime_test" RUN="1"
+JOB bilby_real_events_2 bilby_runs.sub
+VARS bilby_real_events_2 TOTAL_MASS="23.80062" MASS_RATIO="0.514656" PSI="1.191532" PHASE="1.776411" TIME="1.135136*(10.0**9.0)" RA="4.776106" DEC="-1.192467" INC="2.658379" S1Z="0.322059" S2Z="0.024321" DISTANCE="453.225812" OUTDIR="/home/darin.mumma/public_html/bilby_real/real_lambda_inference" LABEL="GW151226" EXPERIMENT="real_lambda_inference" RUN="2"
 

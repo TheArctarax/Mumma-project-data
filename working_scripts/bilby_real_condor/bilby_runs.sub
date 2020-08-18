@@ -12,7 +12,7 @@ request_disk = 3GB
 request_memory = 5GB
 transfer_input_files = bilby_real.py
 executable = ./bilby_real.py
-arguments = " --outdir $(OUTDIR) --label $(LABEL) "
+arguments = " --m $(TOTAL_MASS) --q $(MASS_RATIO) --psi $(PSI) --phase $(PHASE) --t $(TIME) --ra $(RA) --dec $(DEC) --i $(INC) --s1z $(S1Z) --s2z $(S2Z) --d $(DISTANCE) --outdir $(OUTDIR) --label $(LABEL) "
 want_graceful_removal = True
 request_cpus = 6
 queue 1

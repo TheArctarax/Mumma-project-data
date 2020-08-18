@@ -312,7 +312,7 @@ psd_end_time = start_time
 
 # We now use gwpy to obtain analysis and psd data and create the ifo_list
 ifo_list = bilby.gw.detector.InterferometerList([])
-for det in ["H1", "L1"]:
+for det in ["H1", "L1", "V1"]:
     logger.info("Downloading analysis data for ifo {}".format(det))
     ifo = bilby.gw.detector.get_empty_interferometer(det)
     data = TimeSeries.fetch_open_data(det, start_time, end_time)
@@ -353,6 +353,10 @@ priors["inc"] = bilby.core.prior.Sine(
     minimum=0.0,
     maximum=np.pi
 )
+
+injection_parameters["psi"] = 12.0
+injection_parameters["phase"] = 12.0
+injection_parameters["inc"] = 12.0
 
 # Initialise the likelihood by passing in the interferometer data (ifos) and
 # the waveform generator

@@ -212,7 +212,6 @@ def memory_time_model(
 
     return {"plus": plus, "cross": cross}
 
-
 # We are going to inject a binary black hole waveform.  We first establish a
 # dictionary of parameters that includes all of the different waveform
 # parameters, including masses of the two black holes (mass_1, mass_2),
@@ -278,7 +277,7 @@ surr = gwmemory.waveforms.surrogate.Surrogate(
     total_mass=injection_parameters["total_mass"],
     distance=1.0,
     times=surr_times,
-    modes=[(2,2),(2,-2)],
+    # modes=[(2,2),(2,-2)],
 )
 
 h_lm, surr_times = surr.time_domain_oscillatory()
@@ -325,7 +324,13 @@ priors["memory_constant"] = bilby.core.prior.Uniform(-5, 5, r"$\lambda$")
 # priors["distance"] = bilby.core.prior.Uniform(80, 120, r"$d_L$")
 priors["psi"] = bilby.core.prior.Uniform(0.0, np.pi, r"$\psi$")
 priors["phase"] = bilby.core.prior.Uniform(0.0, 2.0 * np.pi, r"$\phi$")
-# priors["inc"] = bilby.core.prior.Sine(0.0, np.pi, r"$i$")
+priors["inc"] = bilby.core.prior.Sine(
+    name=r"$\iota$",
+    latex_label=r"$\iota$",
+    unit=None,
+    minimum=0.0,
+    maximum=np.pi
+)
 
 # Initialise the likelihood by passing in the interferometer data (ifos) and
 # the waveform generator
